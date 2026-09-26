@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light">
+<meta name="theme-color" content="#A2368F">
+<link rel="icon" type="image/jpeg" href="assets/images/logo.jpg">
+<link rel="apple-touch-icon" href="assets/images/logo.jpg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700&family=Work+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<title>Obésité guide pratique</title>
+<meta name="description" content="Obésité guide pratique : le livre de la chirurgie de l’obésité, édition 2025/2026. Ressources gratuites, enquêtes et carte des associations de patients.">
+<link rel="canonical" href="https://obesite-guide-pratique.eu/">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="fr_FR">
+<meta property="og:site_name" content="Obésité guide pratique">
+<meta property="og:title" content="Obésité guide pratique">
+<meta property="og:description" content="Le livre de la chirurgie de l’obésité — édition 2025/2026.">
+<meta property="og:url" content="https://obesite-guide-pratique.eu/">
+<meta property="og:image" content="https://obesite-guide-pratique.eu/assets/images/card.jpg">
+<meta property="og:image:alt" content="Couverture du livre Obésité guide pratique patients">
+<meta name="twitter:card" content="summary_large_image">
+<style>
+:root{
+  --violet:#A2368F; --violet-dark:#69235D; --violet-soft:#f7ecf5;
+  --teal:#0e8a7d; --ink:#1c2230; --paper:#f6f7f9; --card:#fff;
+  --muted:#6b7280; --line:#e3e6ec; --shadow:0 18px 50px -20px rgba(20,28,45,.35);
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:'Work Sans',system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;line-height:1.65;font-size:1.02rem;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+h1,h2,h3{font-family:'Fraunces',Georgia,serif;letter-spacing:-.01em}
+a{color:var(--violet);text-underline-offset:2px}
+a:hover{color:var(--violet-dark)}
+.wrap{max-width:1120px;margin:0 auto;padding:0 28px}
+.skip{position:absolute;left:-999px;top:8px;background:var(--violet);color:#fff;padding:8px 14px;border-radius:8px;z-index:100}
+.skip:focus{left:8px;color:#fff}
+
+/* ---- Bandeau marque (identique aux pages intro des applications) ---- */
+.brandbar{background:#fff;border-bottom:1px solid var(--line)}
+.brandbar-in{display:flex;align-items:center;gap:16px;max-width:1120px;margin:0 auto}
+.brand-title{margin:0;font-weight:700;font-size:clamp(1.2rem,3.2vw,1.9rem);line-height:1.2;background:linear-gradient(90deg,var(--violet-dark),var(--teal) 50%,var(--violet-dark));-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;color:var(--violet-dark)}
+
+/* ---- Menu : barre verticale toujours visible (PC, tablette, smartphone) ---- */
+:root{--rail:52px;--logo:40px;--ouvert:min(80vw,340px)}
+@media (min-width:900px){:root{--rail:64px;--logo:52px;--ouvert:470px}}
+body{padding-left:var(--rail)}
+nav.menu{position:fixed;left:0;top:0;bottom:0;width:var(--rail);z-index:60;background:var(--violet);
+  display:flex;flex-direction:column;align-items:stretch;overflow-x:hidden;overflow-y:auto;scrollbar-width:none;
+  box-shadow:4px 0 22px -10px rgba(20,28,45,.55);transition:width .22s ease}
+nav.menu::-webkit-scrollbar{display:none}
+.logo-btn{flex:none;align-self:center;margin:10px 0 6px;padding:0;border:0;background:none;border-radius:50%;cursor:pointer;display:block;-webkit-tap-highlight-color:transparent}
+.logo-btn img{width:var(--logo);height:var(--logo);border-radius:50%;border:2.5px solid var(--teal);box-shadow:0 4px 12px rgba(20,28,45,.35);object-fit:cover;display:block;background:#fff}
+nav.menu ul{list-style:none;margin:0;padding:0 6px 56px;flex:1;display:flex;flex-direction:column;justify-content:center}
+nav.menu li{margin:2px 0}
+nav.menu a.lien{display:flex;align-items:center;gap:8px;color:#fff;text-decoration:none;border-radius:12px;min-height:44px;padding:0;overflow:hidden}
+nav.menu .ico{flex:none;width:calc(var(--rail) - 12px);text-align:center;font-size:1.4rem;line-height:1;opacity:.8;transition:transform .25s ease,opacity .25s ease}
+nav.menu .txt{white-space:nowrap;font-size:.95rem;font-weight:500;line-height:1.25;opacity:0;padding-right:12px;transition:opacity .15s ease}
+nav.menu a.lien.actif{background:#fff;color:var(--violet-dark)}
+nav.menu a.lien.actif .ico{opacity:1;transform:scale(1.22)}
+nav.menu a.lien.actif .txt{font-weight:800}
+/* ouvert : toucher le logo, glisser le doigt vers la droite, ou survol (PC) */
+nav.menu.ouvert{width:var(--ouvert)}
+nav.menu.ouvert .txt{opacity:1;white-space:normal}
+nav.menu.ouvert .ico{opacity:1}
+@media (hover:hover){
+  nav.menu:hover{width:var(--ouvert)}
+  nav.menu:hover .txt{white-space:normal}
+  nav.menu:hover .txt,nav.menu:hover .ico{opacity:1}
+  nav.menu a.lien:hover{background:rgba(255,255,255,.18)}
+  nav.menu a.lien.actif:hover{background:#fff}
+}
+nav.menu:has(:focus-visible){width:var(--ouvert)}
+nav.menu:has(:focus-visible) .txt{opacity:1;white-space:normal}
+@media (max-height:480px){
+  :root{--logo:34px}
+  .logo-btn{margin:6px 0 2px}
+  nav.menu ul{padding-bottom:6px;justify-content:flex-start}
+  nav.menu li{margin:0}
+  nav.menu a.lien{min-height:38px}
+  nav.menu .ico{font-size:1.2rem}
+}
+@media (prefers-reduced-motion:reduce){nav.menu,nav.menu .ico,nav.menu .txt{transition:none}}
+.brandbar-in{padding:18px 16px}
+@media (min-width:900px){.brandbar-in{padding:22px 28px;min-height:96px}}
+@media (max-width:700px){.wrap{padding:0 14px}}
+
+/* ---- Contenu ---- */
+section{padding:30px 0 6px;scroll-margin-top:16px}
+section h2{color:var(--violet);font-size:1.5rem;margin:0 0 12px;line-height:1.3}
+.card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:22px 22px;margin-bottom:8px;box-shadow:0 1px 2px rgba(20,28,45,.04)}
+.card p:first-child{margin-top:0}
+.intro{display:grid;grid-template-columns:1.25fr .75fr;gap:32px;align-items:center}
+.intro-txt{font-size:1.12rem}
+.intro-img{margin:0;text-align:center}
+.intro-img img{width:100%;max-width:340px;height:auto;display:inline-block}
+@media (max-width:760px){.intro{grid-template-columns:1fr;gap:12px}.intro-img img{max-width:250px}}
+ul.liens{list-style:none;margin:10px 0 0;padding:0}
+ul.liens li{padding:9px 0;border-top:1px solid var(--line)}
+ul.liens li:first-child{border-top:none}
+ul.puces{margin:8px 0 8px 1.2em;padding:0}
+ul.puces li{margin:4px 0}
+.note{font-size:.88rem;color:var(--muted)}
+.btn{display:inline-block;background:var(--violet);color:#fff;text-decoration:none;font-weight:700;padding:12px 22px;border-radius:34px;margin-top:6px;box-shadow:0 16px 32px -16px rgba(162,54,143,.55)}
+.btn:hover{background:var(--violet-dark);color:#fff}
+img.avis{max-width:100%;height:auto;border-radius:12px;margin:8px 0 12px;display:block}
+footer{padding:36px 16px 44px;text-align:center;color:var(--muted);font-size:.84rem;border-top:1px solid var(--line);margin-top:30px}
+:focus-visible{outline:3px solid var(--teal);outline-offset:2px}
+</style></head>
+<body>
+<a class="skip" href="#contenu-principal">Aller au contenu</a>
+
+<header class="brandbar">
+  <div class="brandbar-in">
+    <p class="brand-title">Le livre de la chirurgie de l’obésité</p>
+  </div>
+</header>
+
+<nav class="menu" id="menu" aria-label="Navigation principale">
+  <button class="logo-btn" type="button" aria-expanded="false" aria-controls="menu-liste" aria-label="Ouvrir le menu"><img src="assets/images/logo.jpg" width="52" height="52" alt=""></button>
+  <ul id="menu-liste">
+    <li><a class="lien" href="#reponses" aria-label="Quelles réponses&nbsp;?"><span class="ico" aria-hidden="true">🔆</span><span class="txt" aria-hidden="true">Quelles réponses&nbsp;?</span></a></li>
+    <li><a class="lien" href="#composition" aria-label="Ressources en accès libre téléchargeables"><span class="ico" aria-hidden="true">🎁</span><span class="txt" aria-hidden="true">Ressources en accès libre téléchargeables</span></a></li>
+    <li><a class="lien" href="#commander" aria-label="Commander&nbsp;: Où le trouver&nbsp;?"><span class="ico" aria-hidden="true">🛒</span><span class="txt" aria-hidden="true">Commander&nbsp;: Où le trouver&nbsp;?</span></a></li>
+    <li><a class="lien" href="#nouveautes" aria-label="Quoi de neuf dans l’édition 2025"><span class="ico" aria-hidden="true">🆕</span><span class="txt" aria-hidden="true">Quoi de neuf dans l’édition 2025</span></a></li>
+    <li><a class="lien" href="#avis" aria-label="Avis&nbsp;: Qu’est-ce qu’ils en disent&nbsp;?"><span class="ico" aria-hidden="true">🥰</span><span class="txt" aria-hidden="true">Avis&nbsp;: Qu’est-ce qu’ils en disent&nbsp;?</span></a></li>
+    <li><a class="lien" href="#enquetes" aria-label="Enquêtes&nbsp;: Partage de réalités"><span class="ico" aria-hidden="true">🔑</span><span class="txt" aria-hidden="true">Enquêtes&nbsp;: Partage de réalités</span></a></li>
+    <li><a class="lien" href="#carte" aria-label="Bonus&nbsp;: Carte des associations de patients"><span class="ico" aria-hidden="true">🏡</span><span class="txt" aria-hidden="true">Bonus&nbsp;: Carte des associations de patients</span></a></li>
+  </ul>
+</nav>
+
+<main id="contenu-principal" class="wrap">
+
+  <section id="intro">
+    <div class="card intro">
+      <div class="intro-txt">
+        <p>Des professionnels de santé ont écrit des livres passionnants à propos du bariatrique. Certains patients témoignent de leurs expériences. Ce livre vous propose une synthèse unique. Vous y trouverez tout ce que vous avez besoin de savoir sur la chirurgie de l’obésité (la chirurgie bariatrique).</p>
+        <p>Considérez-le comme un guide de voyage&nbsp;!</p>
+      </div>
+      <figure class="intro-img">
+        <img src="assets/images/couverture.webp" width="640" height="894" alt="Couverture du livre « Obésité, guide pratique patients : réponses chirurgicales (sleeve-bypass) et pharmacologiques », version 2, édition 2025, d’Olivier Tyrbas de Chamberet">
+      </figure>
+    </div>
+  </section>
+
+  <section id="contenu">
+    <h2>Quel contenu&nbsp;?</h2>
+    <div class="card">
+      <p>Abondamment illustré, il apporte sous forme d’articles (à lire en fonction de vos interrogations) des réponses pratiques à tous les stades du parcours. Par exemple, cet ouvrage dédramatise l’inquiétude fréquente du bon volume chez les opérés. Réponse concrète&nbsp;: sur une page la description de 5 assiettes à 2 mois post-op. Les cicatrices sont décrites sur quatre pages et 15 photos pour illustrer l’évolution sur un an. On visualise les différentes approches chirurgicales et on suit leurs évolutions pendant un an sur un patient témoin. Autre thème vital, l’embarquement des membres de la famille mérite un traitement particulier.</p>
+    </div>
+  </section>
+
+  <section id="reponses">
+    <h2>Quelles réponses&nbsp;?</h2>
+    <div class="card">
+      <p>L’ambition de ce livre est de proposer des réponses à toutes les questions que les centaines de patients que j’ai côtoyés pendant plus de cinq ans m’ont posées. Il partage toutes les solutions que nous avons trouvées collectivement avec des professionnels bienveillants. Ici, des propositions de supports adaptés aux enfants de différents âges pour leur expliquer cette opération en fonction de leur âge.</p>
+    </div>
+  </section>
+
+  <section id="composition">
+    <h2>Comment est-il composé&nbsp;?</h2>
+    <div class="card">
+      <p>Il est conçu comme un guide de voyage avec 4 grands chapitres avec des liaisons entre chaque article pour une navigation facile.</p>
+      <ul class="puces">
+        <li>Expliquer la mécanique de l’obésité afin de mieux se soigner.</li>
+        <li>Se préparer à l’intervention.</li>
+        <li>L’opération et la phase critique des premières semaines.</li>
+        <li>S’adapter à sa nouvelle vie.</li>
+      </ul>
+      <p>De nombreuses check-lists sont incluses&nbsp;: Ici, la somme de toutes les recommandations des opérés. Vous pouvez en télécharger certaines ci-dessous.</p>
+
+      <h3 style="margin:18px 0 0;font-size:1.05rem;color:var(--wine)">Ressources en accès libre téléchargeables</h3>
+      <ul class="liens">
+        <li><a href="https://drive.google.com/file/d/16nx4LgZuK1_I_7gA6V0jYXdPCcXLmQVy/view?usp=sharing" rel="noopener">Sommaire édition 2025 vs 2023</a></li>
+        <li><a href="https://drive.google.com/file/d/101e4V1Q1-Mg7cPNPe-JkL-XNBz2hjZqK/view?usp=drive_link" rel="noopener">Check-list premier RDV</a></li>
+        <li><a href="https://drive.google.com/file/d/13fqBpv1xT0w_ya7I6WHQsNzThBih6uYj/view?usp=drive_link" rel="noopener">Check-list hospitalisation</a> (Maj 04/10/2025)</li>
+        <li><a href="https://drive.google.com/file/d/14qdBysgcyHW-1hzUKUyx80aHmyMMwAb1/view?usp=drive_link" rel="noopener">Check-list reprise de poids</a> (Maj 2025)</li>
+        <li><a href="https://drive.google.com/file/d/1bPTF5ml6en2v8V0DMaaxx5WrDS72LpUA/view?usp=drive_link" rel="noopener">Article&nbsp;: Dumping Syndrome et Hypoglycémie fonctionnelle</a> (Maj 2025)</li>
+        <li><a href="https://drive.google.com/file/d/1QjPwCQ6VQtdO2m5zC5o2UXFCiESiVWHh/view?usp=drive_link" rel="noopener">Article&nbsp;: Perte de cheveux</a> (Maj 2024)</li>
+        <li><a href="https://drive.google.com/file/d/17qso61EYN8S3biLUQMXo2ZJEnDkx-SFM/view?usp=sharing" rel="noopener">Article&nbsp;: Protéines</a> (Maj 2025)</li>
+        <li><a href="https://docs.google.com/document/d/1_sEt72yvM0-fsM53uX_JxlClSayObqhV/edit?usp=sharing" rel="noopener">Modèles de cartes patients</a></li>
+      </ul>
+    </div>
+  </section>
+
+  <section id="public">
+    <h2>Pour qui est-il conçu&nbsp;?</h2>
+    <div class="card">
+      <p>Il est prévu pour ceux qui envisagent la chirurgie et les aident à appréhender leur rapport avec le poids. J’espère que certains comprendront pourquoi le bariatrique n’est pas pour eux. Ce livre leur apporte d’autres pistes de travail plus adaptées notamment les options pharmacologiques. Et pour ceux qui iront au bout de la démarche, qu’ils intégreront l’importance du suivi et que ce n’est pas une solution de facilité. Il est pensé comme un accompagnement à la chirurgie. Il écarte volontairement les scénarios médicaux rares ou complexes. Il casse des mythes, contient les recommandations des équipes pluridisciplinaires, et propose des moyens de mise en œuvre. C’est un ouvrage de transmission bienveillant. Pouvoir déjeuner au restaurant est une question qui revient souvent&nbsp;: voilà une solution simple pour gérer les restes.</p>
+    </div>
+  </section>
+
+  <section id="commander">
+    <h2>Commander&nbsp;: Où le trouver&nbsp;?</h2>
+    <div class="card">
+      <p>Ce livre est disponible en plusieurs formats en fonction de votre besoin:</p>
+      <ul class="puces">
+        <li>La version 2025 (couverture souple) sur le site de l’éditeur ou en contactant l’auteur (pour bénéficier du tarif auteur).</li>
+        <li>La version 2025 au format PDF depuis le site de l’éditeur.</li>
+        <li>La version 2025 en couleurs et en noir &amp; blanc avec une reliure à spirales depuis le site de l’éditeur.</li>
+        <li>La version couleurs 2023 (couverture souple) sur Amazon.</li>
+      </ul>
+      <ul class="liens">
+        <li><a href="https://www.lulu.com/shop/olivier-tyrbas-de-chamberet/ob%C3%A9sit%C3%A9-guide-pratique-patients-r%C3%A9ponses-chirurgicales-sleeve-bypass-pharmacologiques/paperback/product-kvkzym4.html?q=Tyrbas&page=1&pageSize=4" rel="noopener">Version 2025 couleurs</a> (35,43&nbsp;€ hors frais de port)</li>
+        <li><a href="https://www.lulu.com/fr/shop/olivier-tyrbas-de-chamberet/ob%C3%A9sit%C3%A9-guide-pratique-patients-r%C3%A9ponses-chirurgicales-sleeve-bypass-pharmacologiques/ebook/product-rmr65r8.html?page=1&pageSize=4" rel="noopener">Version 2025 couleurs format PDF</a> (11,50&nbsp;€)</li>
+        <li><a href="https://www.lulu.com/fr/shop/olivier-tyrbas/ob%C3%A9sit%C3%A9-guide-pratique-patients-r%C3%A9ponses-chirurgicales-sleeve-bypass-pharmacologiques/paperback/product-dyd8m7j.html?page=1&pageSize=4" rel="noopener">Version 2025 (reliure spirale) couleur</a> (27,70&nbsp;€ hors frais de port)</li>
+        <li><a href="https://www.lulu.com/fr/shop/olivier-tyrbas-de-chamberet/ob%C3%A9sit%C3%A9-guide-pratique-patients-r%C3%A9ponses-chirurgicales-sleeve-bypass-pharmacologiques/paperback/product-7k8gmp9.html?q=tyrbas&page=1&pageSize=4" rel="noopener">Version 2025 (reliure spirale) noir et blanc</a> (19,35&nbsp;€ hors frais de port)</li>
+        <li><a href="https://drive.google.com/file/d/1SWzsXMBkWLrzenZRcpr_RjYty2XCiYX2/view?usp=sharing" rel="noopener">Version 2025 couleurs - Procédure pour bénéficier du tarif Auteur</a> (32,50&nbsp;€ frais de port France inclus)</li>
+        <li><a href="https://www.amazon.fr/dp/1470941570" rel="noopener">Version 2023 couleurs - Site Amazon.fr</a> (41,09&nbsp;€ port inclus avec Prime)</li>
+      </ul>
+    </div>
+  </section>
+
+  <section id="nouveautes">
+    <h2>Quoi de neuf dans l’édition 2025&nbsp;?</h2>
+    <div class="card">
+      <p>Un guide repensé pour les patients bariatriques&nbsp;: de nouveaux articles, des conseils concrets, des solutions validées par les professionnels de santé. Un compagnon pratique, enrichi et motivant.</p>
+      <p>Le nouveau titre reflète mieux l’esprit du livre avec la couverture originale d’une <a href="https://www.instagram.com/ondiraitlenord/" rel="noopener">jeune artiste</a> dont j’aime beaucoup l’univers. Grâce à de nombreuses discussions avec des professionnels de santé bienveillants, j’ai inclus des améliorations comme des chapitres sur la frustration ou les compléments alimentaires, un <a href="https://drive.google.com/file/d/14qdBysgcyHW-1hzUKUyx80aHmyMMwAb1/view?usp=drive_link" rel="noopener">arbre d’actions</a> pour mieux gérer la reprise de poids, et enfin des réponses éprouvées contre la <a href="https://drive.google.com/file/d/1QjPwCQ6VQtdO2m5zC5o2UXFCiESiVWHh/view?usp=drive_link" rel="noopener">perte des cheveux</a> qui angoisse tellement de patientes (accessibles en accès libre)&nbsp;!</p>
+      <p>Cette nouvelle édition intègre aussi les recommandations de la Haute Autorité de santé française. Les multiples échanges avec les opérés m’ont permis d’ajouter plusieurs chapitres (les notions d’objectif, de contrôle, ou la stigmatisation), pour mieux comprendre l’obésité, préparer son parcours et lutter plus efficacement contre la maladie&nbsp;! J’ai enfin ajouté des sujets que vous m’avez proposés (comme le don du sang ou les emprunts). Presque 80 nouveaux articles et plus de 30% du contenu nouveau ou modifié. Merci à tous&nbsp;! Ce sont les réponses que nous avons élaborées ensemble depuis 5 ans.</p>
+      <p>Cette nouvelle édition aurait dû dépasser 500 pages, avec un prix de vente trop élevé. J’ai donc revu la maquette et optimisé le contenu pour rester dans un format de moins de 420 pages. Ce livre est maintenant disponible en 4 formats (dont PDF) afin que chacun puisse trouver celui qui lui convient.</p>
+    </div>
+  </section>
+
+  <section id="avis">
+    <h2>Avis&nbsp;: Qu’est-ce qu’ils en disent&nbsp;?</h2>
+    <div class="card">
+      <img class="avis" src="assets/images/image06.jpg" alt="Avis de lecteurs" loading="lazy" onerror="this.remove()">
+      <ul class="liens">
+        <li><a href="https://www.youtube.com/watch?v=du_TEVoEdmI" rel="noopener">Ici une intervention de Mme Béatrix de Lambertye consultante en obésité au Salon de la Nutrition Montpellier 2023</a></li>
+        <li><a href="https://www.youtube.com/watch?v=FrrlBPbBdaY&t=2s" rel="noopener">Revue complète sur la chaîne YouTube&nbsp;: Celine Sleeve</a></li>
+        <li><a href="https://www.youtube.com/watch?v=Yn-m7G-qWk0" rel="noopener">Présentation par Bariamam’s</a></li>
+        <li><a href="http://parcoursbariatrique.fr/2024/12/11/348/" rel="noopener">Présentation sur blog de « Mon chemin vers la renaissance »</a></li>
+        <li><a href="https://open.spotify.com/episode/22xMBLpnI0nVEASHnj5zJh?si=p7QaQoy_TCGEbFDLQ4n3iQ" rel="noopener">Échange sur la chaîne « Le poids des Kilos »</a></li>
+      </ul>
+      <p style="margin-top:14px"><strong>Contact&nbsp;:</strong>
+        <a id="lienMail" href="#">Écrire à l’auteur</a> ·
+        <a href="https://www.linkedin.com/in/olivier-tyrbas/" rel="noopener">LinkedIn</a></p>
+      <noscript><p class="note">Adresse courriel&nbsp;: otyrbasbaria (arobase) sfr.fr</p></noscript>
+    </div>
+  </section>
+
+  <section id="enquetes">
+    <h2>Les obésités&nbsp;: Partage de réalités</h2>
+    <div class="card">
+      <p>Vous trouvez ici les liens vers les deux enquêtes déjà publiées et leurs résultats. Elles ont pour but de mieux comprendre la maladie obésité. Les résultats sont mis à jour régulièrement. <span class="note">Dernière mise à jour&nbsp;: 18 mars 2026</span></p>
+      <ul class="liens">
+        <li><a href="https://drive.google.com/file/d/1Cy2eKED3SYXf84jC-13zHU2zo2MPosF4/view?usp=drive_link" rel="noopener">Accéder aux résultats publiés</a></li>
+        <li><a href="https://docs.google.com/forms/d/e/1FAIpQLSfMs9nxwjwfUovEiy-NImb-XiGo1jgbBKtwsHacHebOhrwxwA/viewform?usp=header" rel="noopener">Enquête (S1)</a></li>
+        <li><a href="https://docs.google.com/forms/d/e/1FAIpQLSdzagniEgxytgehdO_w8Z_0XFHE9518N43MV6HqwNuRFwyC4g/viewform?usp=header" rel="noopener">Enquête (S2)</a></li>
+      </ul>
+    </div>
+  </section>
+
+  <section id="carte">
+    <h2>Bonus&nbsp;: Carte des associations de patients</h2>
+    <div class="card">
+      <p>Trouvez une aide pratique immédiate à proximité (en France métropolitaine et Outre-Mer ou en Suisse francophone) dans votre lutte contre la maladie chronique de l’obésité. (Naviguez et zoomez sur votre ville). Certaines associations sont présentes à plusieurs adresses.</p>
+      <p>Gardez à l’esprit que les associations sont gérées par des bénévoles. Ils vous répondent quand ils le peuvent, sans programme fixe ou obligation de rapidité de leur part. Relancez-les, ou changez le canal de communication (téléphone, mail, texto, réseaux sociaux, etc.), au cas où votre requête restait sans réponse pendant quelques jours. Ainsi, vous ne passerez pas à côté d’une expérience enrichissante, qui peut même transformer positivement votre vie avec la maladie.</p>
+      <p>Sont référencées uniquement les associations actives centrées autour de l’obésité, gérées par des patients, et officiellement enregistrées. Toutes les associations de cette carte ont été contactées et ont répondu favorablement à notre démarche. Un certain nombre proposent un accompagnement autour de la chirurgie bariatrique, mais il y en a aussi qui offrent leur aide pour tout type de patient en situation d’obésité. La nature de l’aide varie en fonction des associations, ainsi, le soutien qu’elles peuvent apporter est divers, résultant de leurs ressources humaines et financières.</p>
+      <p>Il existe deux associations nationales&nbsp;: <a href="https://cnao.fr" rel="noopener">CNAO.fr</a> (Collectif National des Associations d’Obèses) et la Ligue nationale Contre l’Obésité <a href="https://liguecontrelobesite.org/" rel="noopener">liguecontrelobesite.org</a> qui accueillent l’adhésion d’associations de patients locales, et qui proposent des informations et des ressources fiables. Notre carte précise aussi le numéro d’immatriculation (en France un RNA ou un numéro d’immatriculation pour les plus anciennes), la date de création et si elles sont affiliées à une association nationale.</p>
+      <p>Cette carte est maintenue à jour constamment. Nous vous invitons à nous signaler les changements et nouvelles créations de structures associatives sur le territoire. Pour information&nbsp;: référez-vous à la carte des centres spécialisés en obésité sur le site officiel <a href="https://sante.gouv.fr" rel="noopener">sante.gouv.fr</a> si vous souhaitez un accompagnement pluridisciplinaire par des professionnels de santé spécialistes.</p>
+      <p><a class="btn" href="https://macarte.ign.fr/carte/9vPUdF/Associations-de-soutien-et-d-informations-pour-les-personnes-souffrant-d-obesite-" rel="noopener">Ouvrir la carte des associations</a></p>
+      <p class="note">Dernière mise à jour&nbsp;: juin 2026</p>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  Obésité guide pratique — Olivier Tyrbas de Chamberet
+</footer>
+
+<script>
+// Adresse courriel assemblée à l'exécution (limite le moissonnage par les robots).
+(function(){
+  var a=document.getElementById('lienMail');
+  if(a){a.href='mail'+'to:'+['otyrbasbaria','sfr.fr'].join('@');}
+})();
+// Menu : ouverture (logo, glissement du doigt), rubrique active
+(function(){
+  var nav=document.getElementById('menu'),bt=nav.querySelector('.logo-btn');
+  var liens=[].slice.call(nav.querySelectorAll('a.lien'));
+  function ouvre(o){nav.classList.toggle('ouvert',o);bt.setAttribute('aria-expanded',o);bt.setAttribute('aria-label',o?'Fermer le menu':'Ouvrir le menu');}
+  bt.addEventListener('click',function(e){e.stopPropagation();ouvre(!nav.classList.contains('ouvert'));});
+  liens.forEach(function(a){a.addEventListener('click',function(){ouvre(false);a.blur();});});
+  addEventListener('keydown',function(e){if(e.key==='Escape')ouvre(false);});
+  document.addEventListener('click',function(e){if(!nav.contains(e.target))ouvre(false);});
+  // glisser le doigt : droite = ouvrir, gauche = fermer
+  var x0=null,y0=null;
+  nav.addEventListener('touchstart',function(e){var t=e.touches[0];x0=t.clientX;y0=t.clientY;},{passive:true});
+  nav.addEventListener('touchend',function(e){if(x0===null)return;var t=e.changedTouches[0],dx=t.clientX-x0,dy=t.clientY-y0;x0=null;
+    if(Math.abs(dx)>36&&Math.abs(dx)>Math.abs(dy)*1.5)ouvre(dx>0);},{passive:true});
+  // aperçu unique à l'arrivée : montre que le menu se déplie
+  try{if(!sessionStorage.getItem('menuVu')){sessionStorage.setItem('menuVu','1');
+    setTimeout(function(){if(!nav.matches(':hover'))ouvre(true);},900);
+    setTimeout(function(){ouvre(false);},3600);}}catch(e){}
+  // rubrique active = dernière rubrique dont le haut a dépassé 35 % de l'écran
+  var cibles=liens.map(function(a){return document.querySelector(a.getAttribute('href'));});
+  var tick=false;
+  function maj(){tick=false;var y=innerHeight*0.35,cur=-1;
+    cibles.forEach(function(t,i){if(t&&t.getBoundingClientRect().top<=y)cur=i;});
+    if(innerHeight+scrollY>=document.documentElement.scrollHeight-4)cur=cibles.length-1;
+    liens.forEach(function(a,i){a.classList.toggle('actif',i===cur);});}
+  addEventListener('scroll',function(){if(!tick){tick=true;requestAnimationFrame(maj);}},{passive:true});
+  addEventListener('resize',maj);maj();
+})();
+</script>
+</body>
+</html>
