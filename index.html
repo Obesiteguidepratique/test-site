@@ -87,9 +87,6 @@ nav.menu.ouvert{width:var(--ouvert)}
 nav.menu.ouvert .txt{opacity:1;white-space:normal}
 nav.menu.ouvert .ico{opacity:1}
 @media (hover:hover){
-  nav.menu:hover{width:var(--ouvert)}
-  nav.menu:hover .txt{white-space:normal}
-  nav.menu:hover .txt,nav.menu:hover .ico{opacity:1}
   nav.menu a.lien:hover{background:rgba(255,255,255,.18)}
   nav.menu a.lien.actif:hover{background:#fff}
 }
@@ -132,9 +129,9 @@ mark{background:#fbe9f6;color:inherit;padding:0 .15em;border-radius:3px}
 .cote-img img{width:100%;max-width:320px;height:auto;border-radius:10px;box-shadow:0 6px 18px -8px rgba(20,28,45,.35);display:inline-block}
 .zoom{border:0;background:none;padding:0;cursor:zoom-in;display:inline-block;max-width:100%;-webkit-tap-highlight-color:transparent}
 .zoom:hover img{transform:scale(1.02)}
-@media (max-width:760px){
+@media (max-width:760px) and (orientation:portrait),(max-width:480px){
   .cote{grid-template-columns:1fr;gap:16px}
-  .cote.inverse .cote-img{order:0}
+  .cote .cote-img{order:-1}
   .cote-img img{max-width:260px}
 }
 .zoom{border:0;background:none;padding:0;cursor:zoom-in;display:inline-block;max-width:100%;-webkit-tap-highlight-color:transparent}
@@ -161,7 +158,7 @@ ul.liens.boutons.pleine-largeur .bouton-lien{width:100%;text-align:left;justify-
 /* Vitrine "Où le trouver ?" : couvertures + effet de surbrillance */
 ul.vitrine{list-style:none;margin:16px 0 0;padding:0;display:grid;grid-template-columns:repeat(3,1fr);gap:16px 14px}
 @media (max-width:700px){ul.vitrine{grid-template-columns:repeat(2,1fr)}}
-@media (max-width:460px){ul.vitrine{grid-template-columns:1fr}}
+@media (max-width:380px){ul.vitrine{gap:10px 8px}.v-lien{padding:6px}}
 .v-item{transition:opacity .25s ease}
 .v-lien{display:flex;flex-direction:column;align-items:center;gap:10px;text-decoration:none;color:var(--ink);border-radius:14px;padding:10px;transition:transform .2s ease,box-shadow .2s ease,background .2s ease}
 .v-lien img{width:100%;max-width:170px;height:auto;border-radius:8px;box-shadow:0 6px 16px -8px rgba(20,28,45,.35);display:block}
@@ -239,7 +236,7 @@ footer{padding:36px 16px 44px;text-align:center;color:var(--muted);font-size:.84
         <p>Abondamment illustré, il apporte sous forme d’articles (à lire en fonction de vos interrogations) des réponses pratiques à tous les stades du parcours. Par exemple, cet ouvrage dédramatise l’inquiétude fréquente <strong class="v">du bon volume</strong> chez les opérés. Réponse concrète&nbsp;: sur une page la description de 5 assiettes à 2 mois post-op. Les <strong class="v">cicatrices sont décrites sur quatre pages et 15 photos</strong> pour illustrer l’évolution sur un an. On visualise les différentes approches chirurgicales et on suit leurs évolutions pendant un an sur un patient témoin. Autre thème vital, l’embarquement des membres de la famille mérite un traitement particulier.</p>
       </div>
       <figure class="cote-img">
-        <button class="zoom" type="button" aria-label="Agrandir l’extrait sur les assiettes-types"><img src="assets/images/contenu.webp" width="760" height="1090" alt="Page du livre : cinq assiettes-types de patients opérés (bypass et gastrectomie) à environ deux mois post-opératoire, à titre d’illustration et non de recommandation nutritionnelle" loading="lazy"></button>
+        <button class="zoom" type="button" aria-label="Agrandir l’extrait sur les assiettes-types"><img src="assets/images/contenu.webp" width="933" height="1324" alt="Page du livre : cinq assiettes-types de patients opérés (bypass et gastrectomie) à environ deux mois post-opératoire, à titre d’illustration et non de recommandation nutritionnelle" loading="lazy"></button>
       </figure>
     </div>
   </section>
@@ -251,7 +248,7 @@ footer{padding:36px 16px 44px;text-align:center;color:var(--muted);font-size:.84
         <p>L’ambition de ce livre est de proposer des réponses à toutes les questions que les centaines de patients que j’ai côtoyés pendant plus de cinq ans m’ont posées. Il partage toutes les solutions que nous avons trouvées collectivement avec des professionnels bienveillants. Ici, des propositions de supports adaptés aux enfants de différents âges pour leur expliquer cette opération en fonction de leur âge.</p>
       </div>
       <figure class="cote-img">
-        <button class="zoom" type="button" aria-label="Agrandir l’extrait sur l’explication aux enfants"><img src="assets/images/reponses.webp" width="760" height="1140" alt="Page du livre : expliquer l’opération à un enfant à l’aide d’une peluche « support transitionnel » représentant les organes" loading="lazy"></button>
+        <button class="zoom" type="button" aria-label="Agrandir l’extrait sur l’explication aux enfants"><img src="assets/images/reponses.webp" width="1038" height="1453" alt="Page du livre : expliquer l’opération à un enfant à l’aide d’une peluche « support transitionnel » représentant les organes" loading="lazy"></button>
       </figure>
     </div>
   </section>
@@ -295,7 +292,7 @@ footer{padding:36px 16px 44px;text-align:center;color:var(--muted);font-size:.84
         <p>Il est prévu pour ceux qui envisagent la chirurgie et les aident à appréhender leur rapport avec le poids. J’espère que certains comprendront pourquoi le bariatrique n’est pas pour eux. Ce livre leur apporte d’autres pistes de travail plus adaptées notamment les options pharmacologiques. Et pour ceux qui iront au bout de la démarche, qu’ils intégreront l’importance du suivi et que ce n’est pas une solution de facilité. Il est pensé comme un accompagnement à la chirurgie. Il écarte volontairement les scénarios médicaux rares ou complexes. Il casse des mythes, contient les recommandations des équipes pluridisciplinaires, et propose des moyens de mise en œuvre. C’est un ouvrage de transmission bienveillant. Pouvoir déjeuner au restaurant est une question qui revient souvent&nbsp;: voilà une solution simple pour gérer les restes.</p>
       </div>
       <figure class="cote-img">
-        <button class="zoom" type="button" aria-label="Agrandir l’exemple de kit repas au restaurant"><img src="assets/images/pourqui.webp" width="720" height="1074" alt="Exemple de « kit restaurant » : trousse isotherme et boîtes de conservation pour rapporter les restes en toute sécurité" loading="lazy"></button>
+        <button class="zoom" type="button" aria-label="Agrandir l’exemple de kit repas au restaurant"><img src="assets/images/pourqui.webp" width="1166" height="1652" alt="Exemple de « kit restaurant » : trousse isotherme et boîtes de conservation pour rapporter les restes en toute sécurité" loading="lazy"></button>
       </figure>
     </div>
   </section>
@@ -472,17 +469,24 @@ footer{padding:36px 16px 44px;text-align:center;color:var(--muted);font-size:.84
   var liens=[].slice.call(nav.querySelectorAll('a.lien'));
   var tg=nav.querySelector('.rail-toggle');
   var auDoigt=!matchMedia('(hover:hover)').matches;
+  var epingle=false; // vrai quand la bande a été ouverte/fixée via le chevron
   function ouvre(o){nav.classList.toggle('ouvert',o);tg.setAttribute('aria-expanded',o);tg.setAttribute('aria-label',o?'Fermer le menu':'Ouvrir le menu');}
-  bt.addEventListener('click',function(e){e.stopPropagation();ouvre(false);scrollTo({top:0});});
-  tg.addEventListener('click',function(e){e.stopPropagation();ouvre(!nav.classList.contains('ouvert'));});
+  bt.addEventListener('click',function(e){e.stopPropagation();epingle=false;ouvre(false);scrollTo({top:0});});
+  tg.addEventListener('click',function(e){e.stopPropagation();epingle=!nav.classList.contains('ouvert');ouvre(epingle);});
   // au doigt (pas de survol) : un premier contact sur un lien déplie la bande (révèle le texte)
   // sans naviguer ; un second contact (bande déjà ouverte) confirme et suit le lien.
   liens.forEach(function(a){a.addEventListener('click',function(e){
     if(auDoigt && !nav.classList.contains('ouvert')){e.preventDefault();ouvre(true);return;}
-    ouvre(false);a.blur();
+    epingle=false;ouvre(false);a.blur();
   });});
-  addEventListener('keydown',function(e){if(e.key==='Escape')ouvre(false);});
-  document.addEventListener('click',function(e){if(!nav.contains(e.target))ouvre(false);});
+  addEventListener('keydown',function(e){if(e.key==='Escape'){epingle=false;ouvre(false);}});
+  document.addEventListener('click',function(e){if(!nav.contains(e.target)){epingle=false;ouvre(false);}});
+  // survol (souris) : ouvre tant que le curseur reste dessus, sauf si fixée par le chevron ;
+  // en quittant la bande sans l'avoir épinglée, elle se replie.
+  if(!auDoigt){
+    nav.addEventListener('mouseenter',function(){ouvre(true);});
+    nav.addEventListener('mouseleave',function(){if(!epingle)ouvre(false);});
+  }
   // glisser le doigt : droite = ouvrir, gauche = fermer
   var x0=null,y0=null;
   nav.addEventListener('touchstart',function(e){var t=e.touches[0];x0=t.clientX;y0=t.clientY;},{passive:true});
