@@ -1,0 +1,50 @@
+{
+ "date_maj": "08/09/2026",
+ "news": [
+  {
+   "date": "07/09/2026",
+   "rubrique": "restaurant",
+   "contenu": "Entre-Mer Brest  29200 Brest \n"
+  },
+  {
+   "date": "05/09/2026",
+   "rubrique": "app",
+   "contenu": "-Ajout du slider de sélection par date<br>\n-Modification de la sélection rapide<br>\n-Ajout du filtre ★ pour les menus bariatriques<br>"
+  },
+  {
+   "date": "23/08/2026",
+   "rubrique": "restaurant",
+   "contenu": "La Stalla\t22430 Erquy<br>\nLe Bistrot  44420 La Turballe<br>\nUm Beaumonde 7500 Tournai \n"
+  },
+  {
+   "date": "22/08/2026",
+   "rubrique": "app",
+   "contenu": "ℹ️ À propos<br>\nBoutons de partage sur les réseaux sociaux"
+  },
+  {
+   "date": "22/08/2026",
+   "rubrique": "restaurant",
+   "contenu": "Le Punjab 49100 Angers\n"
+  },
+  {
+   "date": "21/08/2026",
+   "rubrique": "restaurant",
+   "contenu": "Tran Traiteur 49000 Angers\n"
+  },
+  {
+   "date": "19/08/2026",
+   "rubrique": "restaurant",
+   "contenu": "chez Nini 16430 Champniers<br>\nA Table !  71260 Saint-Albain<br>\nRomesa - Buffet du Monde\t40220 Tarnos<br>\n\n"
+  },
+  {
+   "date": "16/08/2026",
+   "rubrique": "app",
+   "contenu": "Bienvenue sur **Baria-ressources** ✨ La page évolue régulièrement : retrouvez ici les nouveautés."
+  },
+  {
+   "date": "15/08/2026",
+   "rubrique": "restaurant",
+   "contenu": "Ajout des premiers **restaurants accueillants** pour les opérés 🍴 Partagez vos bonnes adresses via le bouton « Proposer un restaurant »."
+  }
+ ]
+}

@@ -1,0 +1,941 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="manifest" href="./manifest.json">
+<meta name="theme-color" content="#2b3242">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Baria-ressources">
+<link rel="apple-touch-icon" href="./icons/apple-touch-icon.png">
+<meta name="description" content="La cartographie des ressources disponibles pour les opérés bariatriques (Belgique / Canada / France / Suisse)">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Baria-ressources">
+<meta property="og:title" content="Baria-ressources">
+<meta property="og:description" content="La cartographie des ressources disponibles pour les opérés bariatriques (Belgique / Canada / France / Suisse)">
+<meta property="og:url" content="https://obesiteguidepratique.github.io/Cartographie/Carte_Obesite.html">
+<meta property="og:image" content="https://obesiteguidepratique.github.io/Cartographie/og-image.png">
+<meta property="og:image:secure_url" content="https://obesiteguidepratique.github.io/Cartographie/og-image.png">
+<meta property="og:image:type" content="image/png">
+<meta property="og:image:alt" content="Baria-ressources">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:locale" content="fr_FR">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Baria-ressources">
+<meta name="twitter:description" content="La cartographie des ressources disponibles pour les opérés bariatriques (Belgique / Canada / France / Suisse)">
+<meta name="twitter:image" content="https://obesiteguidepratique.github.io/Cartographie/og-image.png">
+<title>Baria-ressources</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/marked/12.0.0/marked.min.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet.markercluster/1.5.3/MarkerCluster.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet.markercluster/1.5.3/leaflet.markercluster.min.js"></script>
+<style>
+  :root{--slate:#2b3242;--slate-2:#3a4256;--ink:#1c2230;--violet:#A2368F;--violet-soft:#f7ecf5;
+    --teal:#0e8a7d;--paper:#f6f7f9;--line:#e3e6ec;--muted:#6b7280;}
+  *{box-sizing:border-box;} html,body{height:100%;margin:0;}
+  body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;color:var(--ink);display:flex;flex-direction:column;background:var(--paper);}
+  header{background:var(--slate);color:#fff;padding:12px 18px;z-index:1200;}
+  .row1{display:flex;align-items:flex-start;justify-content:space-between;gap:14px;}
+  .brand{display:flex;align-items:center;gap:11px;flex:1 1 auto;min-width:0;} .brand>div{min-width:0;}
+  .brand h1{font-size:15px;font-weight:600;margin:0;}
+  .brand .sub{font-size:11.5px;color:#aeb6c6;margin-top:2px;}
+  .dot{width:26px;height:26px;border-radius:7px;background:var(--violet);display:grid;place-items:center;}
+  .brand-logo{flex:0 0 auto;line-height:0;} .brand-logo img{width:32px;height:32px;border-radius:8px;display:block;}
+  .dot svg{width:15px;height:15px;}
+  .tools{display:flex;gap:8px;align-items:center;flex-wrap:wrap;}
+  .seg{display:flex;gap:5px;background:var(--slate-2);padding:4px;border-radius:9px;}
+  .seg button{border:0;cursor:pointer;font:inherit;font-size:12px;font-weight:600;color:#c7cdda;background:transparent;padding:6px 11px;border-radius:6px;}
+  .seg button.actif{background:#fff;color:var(--ink);}
+  .fond-toggle,.aide-btn,.install-btn{border:1px solid rgba(255,255,255,.25);background:var(--slate-2);color:#e7eaf1;cursor:pointer;font:inherit;font-size:12px;font-weight:600;padding:8px 13px;border-radius:9px;display:inline-flex;align-items:center;gap:7px;}
+  .fond-toggle:hover,.aide-btn:hover{background:#464f66;}
+  .aide-btn{border-color:var(--violet);color:#f0cfe6;flex:0 0 auto;}
+  .install-btn{display:none;border-color:var(--violet);background:var(--violet);color:#fff;}
+  .row2{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-top:10px;}
+  .hd-actions{display:flex;gap:8px;align-items:center;}
+  .zone-dd{position:relative;}
+  .zone-btn{display:inline-flex;align-items:center;gap:6px;background:var(--slate-2);border:1px solid rgba(255,255,255,.25);border-radius:9px;padding:8px 11px;color:#e7eaf1;font:inherit;font-size:12px;font-weight:600;cursor:pointer;}
+  .zone-btn .fa{color:#aeb6c6;font-size:12px;}
+  .zone-car{color:#aeb6c6;font-size:10px;}
+  .zone-menu{position:absolute;top:calc(100% + 4px);left:0;min-width:250px;max-height:min(70vh,440px);background:#fff;border:1px solid var(--line);border-radius:10px;box-shadow:0 8px 24px rgba(20,28,45,.28);z-index:1300;overflow:auto;}
+  .reg-search{width:calc(100% - 16px);margin:8px;padding:8px 10px;border:1px solid var(--line);border-radius:8px;font:inherit;font-size:13px;}
+  .zone-menu .reg-head{font-weight:800;background:#faf6fb;}
+  .zone-menu .reg-sub{padding-left:24px;font-size:12.5px;}
+  #reg-modal .rm-h{font-weight:800;color:var(--violet);margin-top:10px;}
+  #reg-modal .rm-sub{padding-left:24px;}
+  #reg-modal .rm-row{display:flex;align-items:center;gap:10px;padding:7px 2px;font-size:13.5px;cursor:pointer;}
+  #reg-modal .rm-row input{width:18px;height:18px;accent-color:var(--violet);flex:0 0 auto;}
+  .zone-menu button{display:block;width:100%;text-align:left;border:0;background:transparent;padding:9px 12px;font:inherit;font-size:13px;color:var(--ink);cursor:pointer;}
+  .zone-menu button:hover,.zone-menu button.on{background:var(--violet-soft);color:var(--violet);font-weight:600;}
+  .row3{margin-top:10px;display:flex;gap:8px;flex-wrap:wrap;}
+  .sp-field{position:relative;flex:1 1 100%;display:block;}
+  .sp-field input{width:100%;border:1px solid rgba(255,255,255,.25);background:#fff;color:var(--ink);border-radius:9px;padding:9px 34px 9px 11px;font:inherit;font-size:13px;}
+  .sp-field input:focus{outline:2px solid var(--violet);outline-offset:1px;}
+  .sp-clear{position:absolute;right:8px;top:9px;border:0;background:transparent;color:var(--muted);font-size:20px;line-height:1;cursor:pointer;padding:0 4px;}
+  .sp-list{position:absolute;top:calc(100% + 4px);left:0;right:0;background:#fff;border:1px solid var(--line);border-radius:10px;box-shadow:0 8px 24px rgba(20,28,45,.28);max-height:300px;overflow:auto;z-index:1300;display:none;}
+  .sp-list.show{display:block;}
+  .sp-item{display:flex;align-items:center;gap:8px;width:100%;text-align:left;border:0;background:transparent;padding:9px 12px;font:inherit;font-size:13px;color:var(--ink);cursor:pointer;border-bottom:1px solid var(--line);}
+  .sp-item:last-child{border-bottom:0;}
+  .sp-item:hover,.sp-item.hi{background:var(--violet-soft);}
+  .sp-nom{flex:1;}
+  .sp-tag{flex:0 0 auto;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.3px;padding:2px 6px;border-radius:6px;background:var(--violet-soft);color:var(--violet);}
+  .sp-tag.pa{background:#e6f4f1;color:var(--teal);}
+  .sp-tag.re{background:#fdf0e2;color:#b5722a;}
+  .sp-tag.ap{background:#e5eef7;color:#2f6fb0;}
+  .sp-ville-opt{color:var(--slate);font-weight:600;}
+  .sp-ville-opt .fa{color:var(--violet);}
+  .sp-msg{margin-top:6px;font-size:11.5px;color:#cfd5e2;}
+  .sp-msg.err{color:#f3b0a8;}
+  .cfg-count{font-size:13px;font-weight:700;color:var(--slate);background:var(--paper);border:1px solid var(--line);border-radius:8px;padding:9px 11px;margin-bottom:12px;text-align:center;}
+  .cfg-count.zero{background:#fdecea;border-color:#f5c6c2;color:#a3352b;}
+  .tgl{display:flex;align-items:center;gap:12px;padding:10px 2px;border-bottom:1px solid var(--line);font-size:12.5px;color:#374151;line-height:1.35;cursor:pointer;}
+  .tgl span{flex:1;}
+  .tgl-master{font-weight:700;color:var(--slate);font-size:13px;border-bottom:2px solid var(--violet);margin-bottom:4px;}
+  .tgl input{appearance:none;-webkit-appearance:none;width:42px;height:23px;border-radius:12px;background:#c9ccd2;position:relative;cursor:pointer;flex:0 0 auto;transition:background .2s;margin:0;}
+  .tgl input:checked{background:var(--violet);}
+  .tgl input::after{content:"";position:absolute;top:2px;left:2px;width:19px;height:19px;border-radius:50%;background:#fff;transition:left .2s;}
+  .tgl input:checked::after{left:21px;}
+  #alarme-vide{display:none;position:absolute;top:10px;left:50%;transform:translateX(-50%);z-index:1150;background:#fdecea;border:1px solid #f5c6c2;border-left:4px solid #c0392b;color:#a3352b;border-radius:10px;box-shadow:0 8px 24px rgba(20,28,45,.2);max-width:min(460px,92vw);padding:11px 14px;font-size:12.5px;font-weight:600;line-height:1.4;}
+  .filtres{display:flex;gap:6px;flex-wrap:wrap;margin-top:11px;align-items:center;}
+  .filtres .lbl{font-size:11px;color:#aeb6c6;margin-right:2px;}
+  .chip{border:1px solid rgba(255,255,255,.22);cursor:pointer;font:inherit;font-size:11px;font-weight:600;color:#e7eaf1;background:transparent;padding:5px 10px;border-radius:20px;}
+  .chip.on{background:var(--violet);border-color:var(--violet);}
+  .cfg-sub{font-size:12px;font-weight:700;color:var(--slate);margin:2px 0 8px;}
+  .pays-row{display:flex;flex-wrap:wrap;gap:8px;}
+  .pays-chk{display:inline-flex;align-items:center;gap:6px;border:1px solid var(--line);border-radius:20px;padding:6px 12px;font-size:12px;font-weight:600;color:var(--slate);cursor:pointer;background:#fff;}
+  .pays-chk input{margin:0;accent-color:var(--violet);}
+  .pays-chk.on{background:var(--violet-soft);border-color:var(--violet);color:var(--violet);}
+  #adresse-ko{position:fixed;inset:0;z-index:5000;background:var(--paper);display:flex;align-items:center;justify-content:center;padding:24px;}
+  #adresse-ko[hidden]{display:none;}
+  .ko-box{text-align:center;max-width:340px;}
+  .ko-t{font-size:20px;font-weight:800;color:var(--ink);margin-bottom:8px;}
+  .ko-s{font-size:13.5px;color:var(--muted);line-height:1.5;}
+  .sect-sub{font-weight:700;font-size:14px;color:var(--violet);margin:2px 0 8px;}
+  #map{flex:1;width:100%;}
+  #maj-banner{display:none;position:absolute;top:10px;left:50%;transform:translateX(-50%);z-index:1100;background:#fff;border:1px solid var(--line);border-left:4px solid var(--violet);border-radius:10px;box-shadow:0 8px 24px rgba(20,28,45,.18);max-width:min(460px,92vw);}
+  #maj-banner .mb-head{display:flex;align-items:flex-start;justify-content:space-between;gap:10px;padding:11px 14px 6px;font-size:13px;font-weight:700;color:var(--slate);}
+  #maj-banner .mb-close{border:0;background:none;font-size:18px;line-height:1;cursor:pointer;color:var(--muted);}
+  #maj-banner .mb-list{padding:0 14px 12px;font-size:12.5px;line-height:1.6;color:#374151;max-height:210px;overflow:auto;}
+  #hint{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);z-index:900;background:#fff;border:1px solid var(--line);border-radius:12px;padding:20px 24px;text-align:center;box-shadow:0 10px 30px rgba(0,0,0,.12);max-width:340px;}
+  #hint p{margin:0;font-size:13px;color:var(--muted);}
+  .leaflet-popup-content-wrapper{border-radius:12px;box-shadow:0 10px 30px rgba(20,28,45,.2);}
+  .leaflet-popup-content{margin:0 !important;width:284px !important;}
+  .logo-wrap{width:100%;}
+  .pop-logo{width:100%;height:96px;object-fit:contain;background:#fff;border:1px solid var(--line);border-radius:12px 12px 0 0;padding:10px;display:block;}
+  .pop-logo.cartouche{display:flex;align-items:center;justify-content:center;text-align:center;font-weight:700;color:var(--violet);font-size:15px;line-height:1.2;padding:10px 14px;background:#fff;}
+  .fiche-head{display:flex;align-items:flex-start;justify-content:space-between;gap:8px;padding:12px 14px 0;}
+  .fiche-head h2{font-size:15px;margin:0;color:var(--ink);line-height:1.25;flex:1;}
+  .fa-actions{display:flex;gap:5px;flex:0 0 auto;}
+  .fa-actions button{border:1px solid var(--line);background:#fff;cursor:pointer;border-radius:8px;width:30px;height:30px;color:var(--slate);display:grid;place-items:center;font-size:13px;}
+  .fa-actions button:hover{background:var(--paper);color:var(--violet);}
+  .cats{display:flex;gap:5px;flex-wrap:wrap;padding:8px 14px 0;}
+  .cat{font-size:10px;font-weight:700;letter-spacing:.3px;text-transform:uppercase;color:#fff;padding:3px 8px;border-radius:20px;}
+  .cat.bariatrique{background:#b45309;} .cat.adultes{background:#0e8a7d;} .cat.adolescents{background:#2563eb;}
+  .cat.enfants{background:#7c3aed;} .cat.pairs_inclus{background:#A2368F;} .cat.pros_inclus{background:#475569;}
+  .fiche{padding:8px 14px 14px;max-height:250px;overflow:auto;line-height:1.45;font-size:13px;color:#374151;}
+  .fiche.fiche-resto{max-height:56vh;}
+  .fiche table{border-collapse:collapse;width:100%;margin:6px 0;font-size:12px;}
+  .fiche td,.fiche th{border:1px solid var(--line);padding:5px 7px;vertical-align:top;}
+  .fiche tbody tr:nth-child(even){background:#f3f3f7;}
+  .fiche td:first-child{width:22px;text-align:center;}
+  .fiche a{color:var(--teal);text-decoration:none;border-bottom:1px solid rgba(14,138,125,.35);}
+  .fiche h3,.fiche strong{color:var(--slate);}
+  .fiche .video{position:relative;padding-bottom:56%;height:0;margin:8px 0;border-radius:8px;overflow:hidden;}
+  .fiche .video iframe{position:absolute;inset:0;width:100%;height:100%;border:0;}
+  .fiche .adr-titre{font-weight:700;color:var(--slate);margin:9px 0 3px;}
+  .fiche .adresse{margin:2px 0;}
+  .fiche details{margin:9px 0;border:1px solid var(--line);border-radius:8px;overflow:hidden;}
+  .fiche details>summary{cursor:pointer;font-weight:700;color:var(--slate);padding:7px 10px;background:var(--violet-soft);list-style:none;}
+  .fiche details>summary::-webkit-details-marker{display:none;}
+  .fiche details>summary::before{content:"\25BC";font-size:9px;margin-right:7px;color:var(--violet);}
+  .fiche details:not([open])>summary::before{content:"\25B6";}
+  .fiche .panel{padding:8px 10px;}
+  .clu-wrap{background:transparent;}
+  .clu{border-radius:50%;background:#A2368F;color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;border:3px solid #fff;box-shadow:0 2px 7px rgba(20,28,45,.4),0 0 0 4px rgba(162,54,143,.22);}
+  .fiche-comment{display:block;text-align:center;margin-top:8px;padding:8px 10px;border:1px solid var(--line);border-radius:9px;background:var(--paper);color:var(--slate);font-weight:600;font-size:12.5px;text-decoration:none;}
+  .fiche-comment:hover{background:var(--violet-soft);color:var(--violet);border-color:var(--violet);}
+  .resto-btn{background:#c98330;border-color:#c98330;color:#fff;text-decoration:none;}
+  #btn-resto[hidden]{display:none;}
+  .prop-menu{min-width:210px;left:auto;right:0;}
+  .news-rub{font-weight:800;font-size:12px;color:var(--violet);margin:10px 0 6px;text-transform:uppercase;letter-spacing:.4px;}
+  .news-item{border-left:3px solid var(--violet-soft);padding:2px 0 8px 10px;margin-bottom:8px;font-size:13.5px;line-height:1.5;}
+  .news-item p{margin:2px 0;} .news-item:first-child{margin-top:0;}
+  .news-date{font-size:11px;color:var(--muted);margin-bottom:2px;}
+  .news-cfg{display:inline-flex;align-items:center;gap:7px;font-size:13px;font-weight:600;color:var(--slate);cursor:pointer;}
+  .marker-cluster{background:transparent!important;} .marker-cluster div{background:transparent!important;}
+  .pin{filter:drop-shadow(0 3px 4px rgba(20,28,45,.35));transition:opacity .2s;}
+  .sec-pin{filter:drop-shadow(0 2px 3px rgba(20,28,45,.4));}
+  .modal{position:fixed;inset:0;background:rgba(20,28,45,.55);z-index:3000;display:none;align-items:center;justify-content:center;padding:22px;}
+  .modal.ouvert{display:flex;}
+  .modal-box{background:#fff;border-radius:14px;max-width:640px;width:100%;max-height:88vh;overflow:auto;}
+  .modal-bar{position:sticky;top:0;background:#fff;border-bottom:1px solid var(--line);display:flex;justify-content:space-between;align-items:center;gap:10px;padding:12px 18px;z-index:20;box-shadow:0 2px 6px rgba(20,28,45,.08);}
+  .modal-bar .m-nom{font-size:16px;font-weight:700;color:var(--ink);flex:1;}
+  .modal-bar .m-actions{display:flex;gap:6px;}
+  .modal-bar button{border:1px solid var(--line);background:#fff;cursor:pointer;border-radius:8px;padding:7px 11px;font:inherit;font-size:12px;font-weight:600;color:var(--slate);display:inline-flex;align-items:center;gap:6px;}
+  .modal-bar button.close{width:34px;height:34px;justify-content:center;padding:0;font-size:18px;}
+  .modal .fiche{max-height:none;padding:16px 22px 26px;font-size:14px;}
+  footer{background:#fff;border-top:1px solid var(--line);font-size:11px;color:var(--muted);padding:7px 18px;display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;}
+  #foot-date{color:var(--violet);font-weight:600;}
+  .toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:var(--slate);color:#fff;padding:12px 18px;border-radius:10px;font-size:12.5px;max-width:90%;text-align:center;line-height:1.4;opacity:0;transition:opacity .25s;pointer-events:none;z-index:4000;box-shadow:0 6px 20px rgba(0,0,0,.3);}
+  .toast.show{opacity:1;}
+  .guide-overlay{display:none;position:fixed;inset:0;background:rgba(20,28,45,.6);backdrop-filter:blur(2px);z-index:3500;align-items:center;justify-content:center;padding:16px;}
+  .guide-overlay.open{display:flex;}
+  .guide-panel{background:#fff;border-radius:18px;max-width:480px;width:100%;max-height:calc(100vh - 32px);display:flex;flex-direction:column;overflow:hidden;box-shadow:0 20px 60px rgba(0,0,0,.4);}
+  .guide-head{display:flex;align-items:center;justify-content:space-between;padding:13px 18px;background:var(--violet);color:#fff;}
+  .guide-head-title{font-weight:700;font-size:15px;} .guide-head-close{background:none;border:none;color:#fff;font-size:20px;cursor:pointer;}
+  .guide-tabs{display:flex;border-bottom:2px solid var(--line);}
+  .guide-tab{flex:1;padding:12px 6px;font:inherit;font-size:12px;font-weight:700;border:none;background:var(--paper);color:var(--muted);cursor:pointer;}
+  .guide-tab.active{background:#fff;color:var(--violet);border-bottom:2px solid var(--violet);margin-bottom:-2px;}
+  .guide-body{overflow-y:auto;padding:18px 20px;}
+  .guide-tab-content{display:none;font-size:13.5px;line-height:1.6;color:#374151;}
+  .guide-tab-content.active{display:block;}
+  .guide-tab-content h4{margin:0 0 10px;color:var(--slate);} .guide-tab-content a{color:var(--teal);font-weight:600;}
+  .wip{color:var(--muted);font-style:italic;}
+  .ap-sep{border-top:1px solid var(--line);margin:14px 0;}
+  .ap-btn,.ap-link{display:inline-block;width:100%;text-align:center;border:1px solid var(--line);background:#fff;border-radius:9px;padding:10px 12px;font:inherit;font-size:13px;font-weight:600;color:var(--slate);cursor:pointer;text-decoration:none;margin-bottom:8px;}
+  .ap-btn:hover,.ap-link:hover{background:var(--paper);border-color:var(--violet);color:var(--violet);}
+  .kofi-link{display:inline-block;padding:10px 20px;background:#72a4f2;color:#fff;border-radius:12px;font-weight:800;font-size:14px;text-decoration:none;}
+  .ap-center{text-align:center;margin-top:14px;}
+  .ap-ghost{background:none;border:1.5px solid var(--violet);border-radius:8px;cursor:pointer;font:inherit;font-size:12.5px;color:var(--violet);font-weight:700;padding:6px 14px;margin-top:8px;}
+  .share-row{display:flex;gap:9px;justify-content:center;flex-wrap:wrap;margin:2px 0 4px;}
+  .share-btn{width:44px;height:44px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;font-size:18px;color:#fff;border:0;cursor:pointer;text-decoration:none;}
+  .sh-fb{background:#1877f2;} .sh-wa{background:#25d366;} .sh-li{background:#0a66c2;} .sh-tw{background:#111;} .sh-em{background:#6b7280;}
+  .guide-tab-content .share-btn, .guide-tab-content .share-btn i{color:#fff;font-weight:400;}
+  .flotte{display:none;position:fixed;bottom:16px;left:50%;transform:translateX(-50%);z-index:2500;background:#fff;border:1px solid var(--line);border-radius:12px;box-shadow:0 8px 24px rgba(20,28,45,.22);padding:14px 16px;max-width:min(420px,92vw);}
+  .flotte .f-txt{font-size:13px;color:var(--slate);font-weight:600;margin-bottom:10px;line-height:1.4;}
+  .flotte .f-row{display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end;}
+  .flotte button,.flotte a{border:0;border-radius:8px;padding:8px 13px;font:inherit;font-size:12.5px;font-weight:700;cursor:pointer;text-decoration:none;}
+  .f-yes{background:var(--violet);color:#fff;} .f-ghost{background:var(--paper);color:var(--slate);border:1px solid var(--line)!important;} .f-kofi{background:#72a4f2;color:#fff;}
+  #install-invite{border-left:4px solid var(--violet);} #kofi-banner{border-left:4px solid #72a4f2;}
+  @media (max-width:600px){.leaflet-popup-content{width:220px !important;}.modal{padding:0;}.modal-box{border-radius:0;height:100vh;height:100dvh;max-height:100dvh;}.modal-bar{padding-top:calc(12px + env(safe-area-inset-top,0px));}.guide-tab span{display:none;}}
+</style>
+</head>
+<body>
+<div id="adresse-ko"><div class="ko-box"><div class="ko-t">Adresse incorrecte</div><div class="ko-s">Cette adresse ne permet pas d'afficher la carte.</div></div></div>
+<header>
+  <div class="row1">
+    <div class="brand">
+      <a href="https://obesite-guide-pratique.eu/" target="_blank" rel="noopener" class="brand-logo" title="obesite-guide-pratique.eu"><img src="icons/icon-192.png" alt="Baria-ressources"></a>
+      <div><h1>Baria-ressources</h1><div class="sub">La page des ressources des opérés bariatriques.</div></div>
+    </div>
+    <button class="aide-btn" id="btn-aide" type="button">❓ Aide</button>
+  </div>
+  <div class="row2">
+    <button class="install-btn" id="btn-install" type="button">📲 Installer</button>
+    <div class="zone-dd" id="zone-dd">
+      <button class="zone-btn" id="zone-btn" type="button" aria-haspopup="listbox" aria-expanded="false"><i class="fa fa-map-marker"></i> <span id="zone-lab">Aller à…</span> <span class="zone-car">▾</span></button>
+      <div class="zone-menu" id="zone-menu" role="listbox" hidden></div>
+    </div>
+    <button class="fond-toggle" id="btn-fond" type="button"><i class="fa fa-exchange"></i> Fond IGN</button>
+    <span class="prop-wrap" style="position:relative;display:inline-flex;"><button class="fond-toggle resto-btn" id="btn-resto" type="button" hidden>🍴 Proposer un restaurant</button><div class="zone-menu prop-menu" id="propose-menu" hidden></div></span>
+  </div>
+  <div class="row3" id="search-row">
+    <div class="sp-field">
+      <input id="sp-q" type="text" placeholder="Rechercher une entrée ou une ville…" autocomplete="off">
+      <button class="sp-clear" id="sp-clear" type="button" title="Effacer" aria-label="Effacer" hidden>&times;</button>
+      <div class="sp-list" id="sp-list"></div>
+      <div class="sp-msg" id="sp-msg"></div>
+    </div>
+  </div>
+</header>
+<div id="map"></div>
+<div id="maj-banner"><div class="mb-head"><span id="mb-title">🔔 Associations mises à jour depuis votre dernière visite</span><button class="mb-close" id="mb-close" type="button">&times;</button></div><div class="mb-list" id="mb-list"></div></div>
+<div id="alarme-vide">⚠️ Aucune association affichée — un critère masque tout. Ouvrez <b>Aide → Configuration</b> pour réactiver un critère.</div>
+<div id="hint" style="display:none"><p>⏳ <b>Base de données en cours de mise à jour…</b><br>La carte va se recharger automatiquement.</p></div>
+
+<div class="modal" id="news-modal" role="dialog" aria-modal="true">
+  <div class="modal-box" style="max-width:440px;">
+    <div class="modal-bar"><span class="m-nom">✨ Dernières nouveautés</span><button class="close" id="news-close">&times;</button></div>
+    <div id="news-body" style="padding:16px;overflow:auto;"></div>
+    <div style="padding:12px 16px;border-top:1px solid var(--line);text-align:center;"><button class="ap-btn" id="news-ok" style="min-width:120px;background:var(--violet);border-color:var(--violet);color:#fff;font-weight:700;">OK</button></div>
+  </div>
+</div>
+<div class="modal" id="reg-modal" role="dialog" aria-modal="true">
+  <div class="modal-box" style="max-width:460px;display:flex;flex-direction:column;max-height:82vh;">
+    <div class="modal-bar"><span class="m-nom">🗺️ Choisissez les raccourcis de sélection</span></div>
+    <div style="padding:12px 16px 4px;"><input type="text" id="reg-modal-q" placeholder="Rechercher une région…" style="width:100%;padding:9px 11px;border:1px solid var(--line);border-radius:9px;font:inherit;font-size:13px;"></div>
+    <div id="reg-modal-list" style="flex:1;overflow:auto;padding:0 16px 8px;"></div>
+    <div style="padding:12px 16px;border-top:1px solid var(--line);display:flex;justify-content:flex-end;gap:8px;"><button class="ap-btn" id="reg-modal-non" type="button" style="width:auto;margin:0;">Non</button><button class="ap-btn" id="reg-modal-ok" type="button" style="width:auto;margin:0;background:var(--violet);border-color:var(--violet);color:#fff;">Valider</button></div>
+  </div>
+</div>
+<div class="modal" id="modal" role="dialog" aria-modal="true">
+  <div class="modal-box">
+    <div class="modal-bar"><span class="m-nom" id="modal-tag"></span>
+      <div class="m-actions"><button id="modal-copier"><i class="fa fa-clipboard"></i> Copier</button><button class="close" id="modal-close">&times;</button></div>
+    </div>
+    <div id="modal-fiche"></div>
+  </div>
+</div>
+
+<div class="modal" id="install-modal" role="dialog" aria-modal="true">
+  <div class="modal-box" style="max-width:400px;">
+    <div class="modal-bar"><span class="m-nom">📲 Installer l&rsquo;application</span><button class="close" id="im-close">&times;</button></div>
+    <div class="fiche" id="im-steps" style="max-height:none;font-size:14px;"></div>
+  </div>
+</div>
+<div class="guide-overlay" id="guideOverlay">
+  <div class="guide-panel">
+    <div class="guide-head"><span class="guide-head-title">❓ Aide</span><button class="guide-head-close" id="guide-close">&times;</button></div>
+    <div class="guide-tabs">
+      <button class="guide-tab active" data-tab="guide">📖<span> Guide</span></button>
+      <button class="guide-tab" data-tab="config">⚙️<span> Configuration</span></button>
+      <button class="guide-tab" data-tab="apropos">ℹ️<span> À propos</span></button>
+    </div>
+    <div class="guide-body">
+      <div class="guide-tab-content active" id="content-guide"><h4>📖 Guide d&rsquo;utilisation</h4><div id="guide-assoc"><div class="sect-sub">Associations</div>
+        <p>Cette cartographie repose sur des critères objectifs, notamment l&rsquo;enregistrement des structures au Journal Officiel.</p>
+        <p>La carte est établie avec l&rsquo;accord des associations référencées, qui partagent toutes une approche médicale commune de l&rsquo;obésité. À ce jour, elle recense <b><span id="guide-nb">…</span> associations</b>, réparties sur <b><span id="guide-total">…</span> lieux</b>. Cette carte est mise à jour et enrichie en continu depuis 2024. Elle s&rsquo;enrichit progressivement.</p>
+        <p>Elle constitue déjà une ressource identifiée dans le guide de la HAS «&nbsp;<a href="https://www.has-sante.fr/upload/docs/application/pdf/2009-09/brochure_obesite_patient_220909.pdf" target="_blank" rel="noopener">Chirurgie de l&rsquo;obésité – Ce qu&rsquo;il faut savoir avant de vous décider » (p. 13)</a> et sur le site <a href="https://www.obesitefrance.fr/actualites/prise-en-charge/cartographie-des-associations-de-patients-par-omeave" target="_blank" rel="noopener">des centres spécialisés de l&rsquo;obésité</a>.</p>
+        <p>Les principaux objectifs de cette carte sont :</p>
+        <ul style="margin:0 0 8px;padding-left:18px;">
+          <li>Permettre aux personnes en situation d&rsquo;obésité d&rsquo;identifier facilement une association locale d&rsquo;information, de soutien et d&rsquo;entraide (rupture d&rsquo;isolement / partage d&rsquo;expériences / soutien émotionnel et motivation à s&rsquo;engager dans un parcours de soins).</li>
+          <li>Favoriser la mise en lien et la coopération entre associations de patients et centres de soins.</li>
+          <li>Offrir un outil aux CSO pour relayer les messages clés (notamment l&rsquo;importance d&rsquo;un parcours personnalisé pluridisciplinaire) en raison de la chronicité de la maladie, et contribuer à limiter les perdus de vue.</li>
+        </ul>
+        <p>Cette carte se veut la plus exhaustive possible. Elle est indépendante de tout enjeu institutionnel ou politique.</p>
+        <p><b>Droit de modification :</b> toutes les associations peuvent demander une modification ou le retrait de cette carte.</p>
+        </div>
+        <div id="guide-resto"><div class="sect-sub">Restaurants</div>
+        <p>Cette carte a comme but de partager les adresses des restaurants qui sont le plus accueillants et respectueux pour les opérés.</p>
+        <p>Elle ne propose pas de menus diététiquement adaptés dans cette version. Elle se restreint au confort et au bon accueil des opérés.</p>
+        <p>Elle est gratuite et les entrées sont celles partagées par vous. Donc, envoyez-nous vos bonnes adresses&nbsp;!</p>
+        <p>Si vous visitez un restaurant, ajoutez votre avis.</p>
+        <div class="sect-sub" style="margin-top:14px;">Proposer un restaurant — vos questions</div>
+        <p><b>Qui puis-je proposer&nbsp;?</b><br>Tous les restaurants accueillants pour les opérés. Donnez un peu de contexte pour qu'on comprenne pourquoi vous le proposez — pitié, plus qu'un mot&nbsp;! «&nbsp;Top&nbsp;» ou «&nbsp;cool&nbsp;» ne permet pas de se faire une idée.</p>
+        <p><b>Vous n'êtes pas à l'aise avec l'écrit&nbsp;?</b><br>Contactez-moi et je ferai le texte pour vous. Et oui, cela peut être anonyme.</p>
+        <p><b>Je peux dire que j'ai été mal reçu&nbsp;?</b><br>Oui, mais ce n'est pas l'idée de la carte&nbsp;: nous publions des avis positifs.</p>
+        <p><b>Pourquoi certains ont une étoile&nbsp;★&nbsp;?</b><br>Il y a une différence entre les restaurants bienveillants et ceux qui proposent un menu bariatrique. L'étoile signale ceux qui proposent un menu bariatrique spécifique.</p>
+        <p><b>J'ai un restaurant, comment être affiché sur la carte&nbsp;?</b><br>Demandez-le moi tout simplement, c'est gratuit. Vous vous engagez cependant à bien accueillir des personnes en souffrance… et faites passer le mot à votre équipe en salle.</p>
+        </div>
+      </div>
+      <div class="guide-tab-content" id="content-config"><h4>⚙️ Configuration</h4><div id="cfg-install-wrap" style="display:none;margin-bottom:12px;"><button class="ap-btn" id="cfg-install" type="button">📲 Installer l&rsquo;application sur cet appareil</button></div><div class="cfg-sub">📅 Mises à jour depuis</div><input type="range" id="date-slider" style="width:100%;accent-color:var(--violet);"><div style="text-align:center;font-size:12px;color:var(--slate);margin:2px 0;">Depuis le <b id="date-slider-lab">—</b></div><p style="font-size:11px;color:var(--muted);text-align:center;margin:0 0 4px;">Masque les fiches mises à jour avant cette date.</p><div class="ap-sep"></div><button class="ap-btn" id="cfg-reg-modal" type="button">🗺️ Choisissez les raccourcis de sélection</button><div class="ap-sep"></div><div class="cfg-sub">Restaurants</div><label class="tgl"><input type="checkbox" id="cfg-menu-baria"><span>Menu Bariatrique</span></label><p style="font-size:11px;color:var(--muted);margin:2px 0 0 46px;">Afficher uniquement les restaurants avec un menu bariatrique.</p><div class="ap-sep"></div><div id="cfg-assoc"><div id="cfg-toggles"></div><div class="ap-sep"></div></div><div class="cfg-sub">Recherche de ville — pays inclus</div><div id="cfg-pays" class="pays-row"></div><div class="ap-sep"></div><div class="cfg-sub">Nouveautés</div><label class="tgl"><input type="checkbox" id="cfg-news-on"><span>Afficher « Dernières nouveautés au démarrage »</span></label><div style="margin-top:8px;"><button class="ap-btn" id="cfg-news-see" type="button">✨ Voir les nouveautés</button></div><div class="ap-sep"></div><div class="cfg-sub">🔒 Confidentialité</div><p style="font-size:12.5px;color:#374151;line-height:1.5;margin:0;">Vos données restent sur votre appareil. Aucune information n'est envoyée à un serveur. Nous ne collectons rien.</p><div class="ap-sep"></div><button class="ap-btn" id="cfg-reset" type="button" style="border-color:#f0d0d0;color:#c0392b;">♻️ Réinitialiser l&rsquo;application</button><p style="font-size:11px;color:var(--muted);margin-top:2px;">Déconnecte le service worker, vide le cache et efface les réglages locaux, puis recharge. Vos données en ligne ne sont pas touchées.</p></div>
+      <div class="guide-tab-content" id="content-apropos">
+        <h4>ℹ️ À propos</h4>
+        <p>Ceci est une application de patients pour des patients ou des professionnels de santé qui souhaitent partager des ressources utiles.</p>
+        <p>Elle est gratuite et c&rsquo;est un outil annexe du livre «&nbsp;<a href="https://obesite-guide-pratique.eu" target="_blank" rel="noopener">Obésité guide pratique patients</a>&nbsp;».</p>
+        <div class="ap-sep"></div>
+        <button class="ap-btn" id="ap-envoyer" type="button">📤 Envoyer cette app à d'autres opérés</button>
+        <div class="share-row">
+          <a class="share-btn sh-fb" id="sh-fb" target="_blank" rel="noopener" title="Facebook"><i class="fa fa-facebook"></i></a>
+          <a class="share-btn sh-wa" id="sh-wa" target="_blank" rel="noopener" title="WhatsApp"><i class="fa fa-whatsapp"></i></a>
+          <a class="share-btn sh-li" id="sh-li" target="_blank" rel="noopener" title="LinkedIn"><i class="fa fa-linkedin"></i></a>
+          <a class="share-btn sh-tw" id="sh-tw" target="_blank" rel="noopener" title="X (Twitter)"><i class="fa fa-twitter"></i></a>
+          <a class="share-btn sh-em" id="sh-em" title="E-mail"><i class="fa fa-envelope"></i></a>
+        </div>
+        <p style="font-size:11.5px;color:var(--muted);margin:0 0 8px;text-align:center;">Instagram : utilisez « 📤 Envoyer » (partage du téléphone).</p>
+        <a class="ap-link" id="ap-idees" href="mailto:otyrbasbaria@sfr.fr?subject=Une%20idée%20pour%20la%20carte">💬 Vous avez des idées à nous proposer ?</a>
+        <a class="ap-link" id="ap-erreur" href="mailto:otyrbasbaria@sfr.fr?subject=Erreur%20dans%20une%20fiche">🐛 Vous avez trouvé une erreur dans une fiche ?</a>
+        <div class="ap-center">
+          <a class="kofi-link" href="https://ko-fi.com/obesiteguidepratique" target="_blank" rel="noopener">☕ Soutenir sur Ko-fi</a>
+          <div><button class="ap-ghost" id="ap-supported" type="button">☕ J'ai soutenu sur Ko-fi</button></div>
+          <p style="font-size:12px;color:var(--muted);margin-top:8px;">Application gratuite — un café fait toujours plaisir ☕</p>
+        </div>
+        <div class="ap-sep"></div>
+        <h4>📚 Ressources</h4>
+        <p>Cette application n&rsquo;utilise que des ressources <b>libres de droits</b> (licences libres ou ouvertes). Les attributions requises (IGN, OpenStreetMap) sont affichées sur la carte.</p>
+        <ul style="margin:0 0 4px;padding-left:18px;">
+          <li><a href="https://leafletjs.com/" target="_blank" rel="noopener">Leaflet</a> 1.9.4 — carte interactive (licence BSD 2-Clause)</li>
+          <li><a href="https://github.com/Leaflet/Leaflet.markercluster" target="_blank" rel="noopener">Leaflet.markercluster</a> 1.5.3 — regroupement des marqueurs (licence MIT)</li>
+          <li><a href="https://marked.js.org/" target="_blank" rel="noopener">marked</a> 12.0.0 — rendu Markdown des fiches (licence MIT)</li>
+          <li><a href="https://fontawesome.com/v4/" target="_blank" rel="noopener">Font Awesome 4.7</a> — icônes et symboles des marqueurs (police SIL OFL 1.1, code MIT)</li>
+          <li>Fond de carte <a href="https://geoservices.ign.fr/" target="_blank" rel="noopener">IGN Géoplateforme</a> — Plan IGN (Licence Ouverte Etalab, attribution IGN)</li>
+          <li>Fond de carte <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">OpenStreetMap</a> — données © les contributeurs OpenStreetMap (ODbL)</li>
+          <li>Recherche de ville et géocodage — <a href="https://adresse.data.gouv.fr/" target="_blank" rel="noopener">API Adresse (Base Adresse Nationale)</a> (Licence Ouverte Etalab)</li>
+          <li>Diffusion des bibliothèques — <a href="https://cdnjs.com/" target="_blank" rel="noopener">cdnjs</a> (Cloudflare)</li>
+        </ul>
+        <p id="res-logos-assoc" style="font-size:12px;color:var(--muted);margin-top:8px;">Les logos des associations sont fournis par les associations elles-mêmes et restent leur propriété.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="flotte" id="install-invite"><div class="f-txt">📲 Installer l'application sur votre téléphone ?</div><div class="f-row"><button class="f-ghost" id="inv-later" type="button">Plus tard</button><button class="f-yes" id="inv-yes" type="button">Oui, installer</button></div></div>
+<div class="flotte" id="kofi-banner"><div class="f-txt">Cette application est gratuite. Si elle vous aide, un café fait toujours plaisir ☕</div><div class="f-row"><button class="f-ghost" id="kofi-close" type="button">Plus tard</button><button class="f-ghost" id="kofi-done" type="button">J'ai soutenu</button><a class="f-kofi" id="kofi-go" href="https://ko-fi.com/obesiteguidepratique" target="_blank" rel="noopener">☕ Soutenir</a></div></div>
+<div class="toast" id="toast"></div>
+<footer><span id="foot-build">Build 67</span> <span id="foot-date"></span></footer>
+
+<script>
+const MENTION="Données obtenues sur le site : https://obesiteguidepratique.github.io/Cartographie/Carte_Obesite.html";
+const mstore={get:function(k){try{return JSON.parse(localStorage.getItem("cobmap."+k));}catch(e){return null;}},set:function(k,v){try{localStorage.setItem("cobmap."+k,JSON.stringify(v));}catch(e){}}};
+function saveSettings(){try{mstore.set("settings",{showAll:showAll,cats:catToggle,fond:fondCourant,c:[map.getCenter().lat,map.getCenter().lng],z:map.getZoom()});}catch(e){}}
+var _launch=((mstore.get("launch")||0)+1);mstore.set("launch",_launch);
+function reinitialiser(){
+  if(!confirm("Voulez-vous réinitialiser tous les réglages ?")) return;
+  try{Object.keys(localStorage).forEach(function(k){if(k.indexOf("cobmap.")===0)localStorage.removeItem(k);});}catch(e){}
+  var t=[];
+  if(window.caches){t.push(caches.keys().then(function(ks){return Promise.all(ks.map(function(k){return caches.delete(k);}));}));}
+  if(navigator.serviceWorker&&navigator.serviceWorker.getRegistrations){t.push(navigator.serviceWorker.getRegistrations().then(function(rs){return Promise.all(rs.map(function(r){return r.unregister();}));}));}
+  Promise.all(t).catch(function(){}).then(function(){location.reload();});
+}
+const CATS=[["bariatrique","Bariatrique"],["adultes","Adultes"],["adolescents","Adolescents"],["enfants","Enfants"],["pairs_inclus","Pairs"],["pros_inclus","Pros"]];
+marked.setOptions({breaks:false,gfm:true});
+function esc(s){return (s||"").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;");}
+
+/* ---------- rendu fiche ---------- */
+function embedVideo(url){
+  var y=url.match(/(?:youtu\.be\/|[?&]v=|embed\/)([A-Za-z0-9_-]{6,})/);
+  if(y) return '<div class="video"><iframe src="https://www.youtube-nocookie.com/embed/'+y[1]+'" allowfullscreen loading="lazy"></iframe></div>';
+  return '<a href="'+url+'" target="_blank" rel="noopener">'+url+'</a>';
+}
+function preprocessFiche(txt){
+  txt=txt.replace(/```diaporama[\s\S]*?```/g,"");           // diaporama : ignore
+  txt=txt.replace(/!\(img_[A-Za-z0-9]+\)/g,"");
+  // video : !(!(url WxH) WxH) ou !(url)
+  txt=txt.replace(/!\(!\((https?:\/\/[^\s)]+)[^)]*\)[^)]*\)/g,function(m,u){return embedVideo(u);});
+  txt=txt.replace(/!\((https?:\/\/[^\s)]+)(?:\s+\d+x\d+)?\)/g,function(m,u){return embedVideo(u);});
+  // liens moveTo -> <a>
+  txt=txt.replace(/\[([^\]]+)\]\(app:\/\/moveTo\?(-?[\d.]+),(-?[\d.]+)[^)]*\)/g,function(m,l,lng,lat){return '<a href="app://moveTo?'+lng+','+lat+'">'+l.trim()+'</a>';});
+  // panneau dépliable [++ Titre ++] ... [----]
+  txt=txt.replace(/\[\+\+\s*(.+?)\s*\+\+\]\s*(?:<br>)?\s*([\s\S]*?)\[----\]/g,function(m,titre,corps){
+    var lignes=corps.split(/<br>|\n/).map(function(x){return x.replace(/^\s*\|?\s*/,'').trim();}).filter(function(x){return x.length;});
+    var items=lignes.map(function(x){return '<div class="adresse">'+x+'</div>';}).join("");
+    if(lignes.length<=1) return "\n\n"+items+"\n\n";
+    return '\n\n<details open><summary>'+titre+' ('+lignes.length+')</summary><div class="panel">'+items+'</div></details>\n\n';
+  });
+  txt=txt.replace(/\[--\s*(.+?)\s*--\]/g,'\n<div class="adr-titre">$1</div>\n');
+  txt=txt.replace(/--\]/g,"");
+  txt=txt.replace(/^[ \t]*:fa-plus-square:(?::?#[0-9a-fA-F]{3,6}:)?[ \t]*(.+)$/gm,'<div class="adresse"><i class="fa fa-plus-square" style="color:#A2368F"></i> $1</div>');
+  txt=txt.replace(/\*\*[ \t]*(.+?)[ \t]*\*\*/g,"**$1**");
+  txt=txt.replace(/:fa-([a-z0-9-]+):(?::?#([0-9a-fA-F]{3,6}):)?/g,function(m,n,h){return h?'<i class="fa fa-'+n+'" style="color:#'+h+'"></i>':'<i class="fa fa-'+n+'"></i>';});
+  return txt;
+}
+function renderFiche(txt){ var h=marked.parse(preprocessFiche(txt)); return h.replace(/<a href="(https?:[^"]*)"/g,'<a href="$1" target="_blank" rel="noopener"'); }
+function ficheTexte(txt){
+  var t=txt.replace(/```diaporama[\s\S]*?```/g,"").replace(/!\(img_[A-Za-z0-9]+\)/g,"").replace(/--\]/g,"");
+  t=t.replace(/\[\+\+\s*(.+?)\s*\+\+\]/g,"$1").replace(/\[----\]/g,"").replace(/\[--\s*(.+?)\s*--\]/g,"$1");
+  t=t.replace(/:fa-[a-z0-9-]+:(?::?#[0-9a-fA-F]{3,6}:)?/g,"");
+  t=t.replace(/\[([^\]]+)\]\((?:app:\/\/moveTo\?[^)]*|[^)]*)\)/g,"$1");
+  t=t.replace(/<br>/g,"\n").replace(/[|*#>]/g," ").replace(/\n{3,}/g,"\n\n");
+  return t.split("\n").map(function(l){return l.trim();}).join("\n").trim();
+}
+function bornesOK(lat,lng){return !isNaN(lat)&&!isNaN(lng)&&lat>=-22&&lat<=52&&lng>=-62&&lng<=56;}
+function sitesDe(txt){
+  var s=[],m,re=/app:\/\/moveTo\?(-?[\d.]+),(-?[\d.]+)/g;
+  while((m=re.exec(txt))){var la=parseFloat(m[2]),ln=parseFloat(m[1]);if(bornesOK(la,ln))s.push([la,ln]);}
+  return s;
+}
+
+/* ---------- fonds ---------- */
+const fondIGN=L.tileLayer("https://data.geopf.fr/wmts?SERVICE=WMTS&VERSION=1.0.0&REQUEST=GetTile&LAYER=GEOGRAPHICALGRIDSYSTEMS.PLANIGNV2&STYLE=normal&FORMAT=image/png&TILEMATRIXSET=PM&TILEMATRIX={z}&TILEROW={y}&TILECOL={x}",{minZoom:3,maxZoom:18,attribution:'&copy; <a href="https://www.ign.fr/" target="_blank">IGN</a> Geoplateforme'});
+const fondOSM=L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",{subdomains:"abc",minZoom:3,maxZoom:19,attribution:'&copy; <a href="https://www.openstreetmap.org/copyright" target="_blank">OpenStreetMap</a>'});
+const map=L.map("map",{center:[46.7,2.4],zoom:6,layers:[fondIGN]});
+
+/* ---------- marqueurs adaptatifs ---------- */
+function tailleParZoom(z){ var t=22+(z-6)/(13-6)*(40-22); return Math.max(22,Math.min(40,Math.round(t))); }
+/* Couleur + symbole par type (association / pair_aidant / restaurant).
+   Glyphes Font Awesome 4.7 (deja chargee, licence libre SIL OFL) : aucune dependance ajoutee. */
+var PINCOL={association:["#B44A9E","#7A1E68"],pair_aidant:["#12a596","#0a6157"],restaurant:["#c98330","#8a561f"],apa:["#2f6fb0","#1e4f80"]};
+var PINGLY={association:"fa-users",pair_aidant:"fa-handshake-o",restaurant:"fa-cutlery",apa:"fa-bicycle"};
+function pin(size,multi,type,star){
+  var h=Math.round(size*1.33);
+  var col=PINCOL[type]||PINCOL.association; var fill=multi?col[1]:col[0];
+  var gly=PINGLY[type]||PINGLY.association;
+  var ring=multi?'<circle cx="15" cy="14" r="8.5" fill="none" stroke="#fff" stroke-width="2.4"/>':'';
+  var gsz=Math.round(size*0.42);
+  var html='<div style="position:relative;width:'+size+'px;height:'+h+'px;">'
+    +'<svg class="pin" width="'+size+'" height="'+h+'" viewBox="0 0 30 40" xmlns="http://www.w3.org/2000/svg"><path d="M15 0C7 0 1 6 1 14c0 9 14 26 14 26s14-17 14-26C29 6 23 0 15 0z" fill="'+fill+'"/>'+ring+'</svg>'
+    +'<span style="position:absolute;left:50%;top:'+(h*0.35)+'px;transform:translate(-50%,-50%);color:#fff;font-size:'+gsz+'px;line-height:1;pointer-events:none;"><i class="fa '+gly+'"></i></span>'
+    +(star?'<span style="position:absolute;right:-3px;top:-3px;width:'+Math.round(size*0.55)+'px;height:'+Math.round(size*0.55)+'px;background:#f5b301;border:1.5px solid #fff;border-radius:50%;display:flex;align-items:center;justify-content:center;color:#fff;font-size:'+Math.round(size*0.34)+'px;line-height:1;box-shadow:0 1px 3px rgba(0,0,0,.35);pointer-events:none;">\u2605</span>':'')
+    +'</div>';
+  return L.divIcon({html:html,className:"",iconSize:[size,h],iconAnchor:[size/2,h],popupAnchor:[0,-h*0.9]});
+}
+function secPin(size){
+  var h=Math.round(size*1.33);
+  var svg='<svg class="sec-pin" width="'+size+'" height="'+h+'" viewBox="0 0 30 40"><path d="M15 0C7 0 1 6 1 14c0 9 14 26 14 26s14-17 14-26C29 6 23 0 15 0z" fill="#0e8a7d"/><circle cx="15" cy="14" r="5" fill="#fff"/></svg>';
+  return L.divIcon({html:svg,className:"",iconSize:[size,h],iconAnchor:[size/2,h]});
+}
+
+var CLUCOL={association:"#B44A9E",pair_aidant:"#12a596",restaurant:"#c98330",apa:"#2f6fb0"};
+function hexA(h,a){h=h.replace("#","");return "rgba("+parseInt(h.substr(0,2),16)+","+parseInt(h.substr(2,2),16)+","+parseInt(h.substr(4,2),16)+","+a+")";}
+function mkClusterIcon(type){var col=CLUCOL[type]||CLUCOL.association;return function(c){var n=c.getChildCount();var sz=n<10?38:n<50?46:n<200?54:62;var fs=n<100?13:(n<1000?12:11);return L.divIcon({html:'<div class="clu" style="width:'+sz+'px;height:'+sz+'px;font-size:'+fs+'px;background:'+col+';box-shadow:0 2px 7px rgba(20,28,45,.4),0 0 0 4px '+hexA(col,.22)+';">'+n+'</div>',className:'clu-wrap',iconSize:L.point(sz,sz)});};}
+var clusters={};["association","pair_aidant","restaurant","apa"].forEach(function(t){var cg=L.markerClusterGroup({maxClusterRadius:48,showCoverageOnHover:false,spiderfyOnMaxZoom:true,chunkedLoading:true,iconCreateFunction:mkClusterIcon(t)});cg.on("click",function(e){if(e.layer&&e.layer._props)ouvrirFiche(e.layer);});map.addLayer(cg);clusters[t]=cg;});
+/* Fiche en popup de NIVEAU CARTE (ancree a la coordonnee, pas au marqueur) :
+   elle survit au reclustering declenche par le recadrage B2. */
+function ouvrirFiche(m){
+  if(!m||!m._props) return;
+  var anchor=m.getLatLng(); var zFinal=map.getZoom();
+  /* multi-sites : ancrer la fiche au point le plus au nord pour qu'elle s'ouvre au-dessus de tous les sites (sans en recouvrir aucun) */
+  if(m._multi&&m._sites&&m._sites.length){
+    var north=m._sites[0]; for(var i=1;i<m._sites.length;i++){ if(m._sites[i][0]>north[0]) north=m._sites[i]; } anchor=L.latLng(north[0],north[1]);
+    var bons=m._sites.filter(function(s){return bornesOK(s[0],s[1]);});
+    if(bons.length>1){ try{ zFinal=Math.min(13,map.getBoundsZoom(L.latLngBounds(bons))); }catch(e){} }
+  }
+  /* pointe de la fiche toujours au-dessus du sommet de la puce : decalage = hauteur de puce au zoom final */
+  var pinH=Math.round(tailleParZoom(zFinal)*1.33);
+  var pop=L.popup({maxWidth:300,minWidth:230,offset:L.point(0,-(pinH+6)),autoPan:true,autoPanPaddingTopLeft:L.point(20,74),autoPanPaddingBottomRight:L.point(20,24)})
+    .setLatLng(anchor)
+    .setContent(construirePopup(m._props,false));
+  pop._src=m;
+  map.openPopup(pop);
+}
+let markers=[]; var showAll=true; var menuBariaOnly=false; var catToggle={bariatrique:true,adultes:true,adolescents:true,enfants:true,pairs_inclus:true,pros_inclus:true}; let secMarkers=[]; var villePays={FR:true,BE:true,CH:true,CA:true};
+/* Visibilite par type, pilotable par un code dans l URL (partage de vues filtrees).
+   Codes : 29=masquer assos, 32=afficher assos, 52=masquer restos, 54=afficher restos,
+   40=masquer pair-aidants, 45=afficher pair-aidants (ces deux derniers provisoires).
+   Ex : ...Carte_Obesite.html#29  ou  #29-54 (plusieurs codes). */
+var typeVisible={association:false,pair_aidant:false,restaurant:false,apa:false};
+var URLVUE={"29":["association",false],"32":["association",true],"52":["restaurant",false],"54":["restaurant",true],"70":["pair_aidant",false],"22":["pair_aidant",true],"47":["apa",true],"38":["apa",false]};
+var TYPE_PROP={association:{label:"👥 Proposer une association",sujet:"Proposer une association"},restaurant:{label:"🍴 Proposer un restaurant",sujet:"Proposer une adresse de restaurant"},apa:{label:"🚲 Proposer une APA",sujet:"Proposer une structure APA"},pair_aidant:{label:"🤝 Proposer un pair-aidant",sujet:"Proposer un pair-aidant"}};
+function proposeType(t){var cfg=TYPE_PROP[t];if(!cfg)return;var href="mailto:otyrbasbaria@sfr.fr?subject="+encodeURIComponent(cfg.sujet);if(t==="restaurant"&&!mstore.get("restoRecoVu")){mstore.set("restoRecoVu",true);if(confirm("Voulez-vous lire les recommandations ?\n\nVous retrouverez cette information dans l'aide.")){guide.classList.add("open");return;}}window.location.href=href;}
+function configProposeBtn(){var btn=document.getElementById("btn-resto"),menu=document.getElementById("propose-menu");if(!btn)return;var vis=["association","restaurant","apa","pair_aidant"].filter(function(t){return typeVisible[t];});if(!vis.length){btn.hidden=true;return;}btn.hidden=false;if(menu)menu.innerHTML="";if(vis.length===1){var t=vis[0];btn.textContent=TYPE_PROP[t].label;btn.onclick=function(){proposeType(t);};}else{btn.textContent="➕ Proposer…";vis.forEach(function(t){var b=document.createElement("button");b.type="button";b.textContent=TYPE_PROP[t].label;b.addEventListener("click",function(e){e.stopPropagation();menu.hidden=true;proposeType(t);});menu.appendChild(b);});btn.onclick=function(e){e.stopPropagation();menu.hidden=!menu.hidden;};}}
+document.addEventListener("click",function(e){var menu=document.getElementById("propose-menu"),btn=document.getElementById("btn-resto");if(menu&&!menu.hidden&&!menu.contains(e.target)&&e.target!==btn)menu.hidden=true;});
+(function(){var s=(location.hash||"").split(/[?&]/)[0];var mR=/R(\d{2})/i.exec(s);if(mR)window.focusRegionCode=mR[1];var sType=s.replace(/R\d{2}/ig,"");var nums=sType.match(/\d+/g)||[];if(!nums.length){typeVisible.restaurant=true;}else{nums.forEach(function(n){var a=URLVUE[n];if(a)typeVisible[a[0]]=a[1];});}var av=typeVisible.association;var aucun=!typeVisible.association&&!typeVisible.pair_aidant&&!typeVisible.restaurant&&!typeVisible.apa;var ko=document.getElementById("adresse-ko");if(ko)ko.hidden=!aucun;var g=document.getElementById("guide-assoc");if(g)g.style.display=av?"":"none";var l=document.getElementById("res-logos-assoc");if(l)l.style.display=av?"":"none";configProposeBtn();var cfa=document.getElementById("cfg-assoc");if(cfa)cfa.style.display=av?"":"none";var gr=document.getElementById("guide-resto");if(gr)gr.style.display=typeVisible.restaurant?"":"none";var subEl=document.querySelector(".sub");if(subEl){var vt=[];if(typeVisible.association)vt.push("a");if(typeVisible.pair_aidant)vt.push("p");if(typeVisible.restaurant)vt.push("r");if(typeVisible.apa)vt.push("x");var st="La page des ressources des opérés bariatriques";if(vt.length===1){st=vt[0]==="r"?"Les restaurants qui s'adaptent aux bariatriques":vt[0]==="a"?"La page des associations de personnes en obésité.":vt[0]==="p"?"La page des pairs-aidants spécialisés en obésité.":"La page des activités physiques adaptées aux opérés.";}subEl.textContent=st;}})();
+function catsActives(p){ return CATS.filter(function(c){return p[c[0]]==="oui";}); }
+
+function logoHtml(p){
+  var v=(p.logo||"").trim();
+  var nomEsc=esc(p.nom||"");
+  if(v && /\.(png|jpe?g|gif|webp|svg)$/i.test(v)){
+    return '<div class="logo-wrap"><img class="pop-logo" src="pict/'+encodeURIComponent(v)+'" alt="logo" onerror="this.style.display=&quot;none&quot;;this.nextElementSibling.style.display=&quot;flex&quot;"><div class="pop-logo cartouche" style="display:none">'+nomEsc+'</div></div>';
+  }
+  var txt=v?esc(v):nomEsc;
+  return '<div class="logo-wrap"><div class="pop-logo cartouche">'+txt+'</div></div>';
+}
+function construirePopup(p,pourModal){
+  var cats=catsActives(p).map(function(c){return '<span class="cat '+c[0]+'">'+c[1]+'</span>';}).join("");
+  var catsBloc=cats?'<div class="cats">'+cats+'</div>':"";
+  var head="";
+  if(!pourModal){
+    head='<div class="fiche-head"><h2>'+esc(p.nom||"")+'</h2><div class="fa-actions"><button class="b-copier" title="Copier"><i class="fa fa-clipboard"></i></button><button class="b-grand" title="Agrandir"><i class="fa fa-expand"></i></button></div></div>';
+  }
+  var comment='<a class="fiche-comment" href="mailto:otyrbasbaria@sfr.fr?subject='+encodeURIComponent(p.nom||"")+'"><i class="fa fa-envelope-o"></i> Proposer un commentaire</a>';
+  return logoHtml(p)+head+catsBloc+'<div class="fiche'+(p.type==="restaurant"?" fiche-resto":"")+'">'+renderFiche(p.fiche||"")+'</div>'+comment;
+}
+
+function hchaine(str){var h=5381,i=str.length;while(i)h=(h*33)^str.charCodeAt(--i);return (h>>>0).toString(36);}
+function sigParNom(fc){var by={};(fc.features||[]).forEach(function(f){var p=f.properties||{},n=p.nom||"";by[n]=(by[n]||"")+JSON.stringify([f.geometry.coordinates,p.fiche,p.logo,p.bariatrique,p.adultes,p.adolescents,p.enfants,p.pairs_inclus,p.pros_inclus]);});var sig={};Object.keys(by).forEach(function(n){sig[n]=hchaine(by[n]);});return sig;}
+function typeParNom(fc){var by={};(fc.features||[]).forEach(function(f){var p=f.properties||{},n=p.nom||"";if(!(n in by))by[n]=p.type||"association";});return by;}
+var TLBL_MAJ={association:"Associations",pair_aidant:"Pair-aidants",restaurant:"Restaurants"};var TORDER_MAJ=["association","pair_aidant","restaurant"];
+function afficherMaj(noms,tmap){var max=40,shown=0,html="";var groups={};noms.forEach(function(n){var t=(tmap&&tmap[n])||"association";(groups[t]=groups[t]||[]).push(n);});TORDER_MAJ.forEach(function(t){var arr=groups[t];if(!arr||!arr.length)return;html+='<div style="font-weight:700;margin:6px 0 2px;">'+TLBL_MAJ[t]+'</div>';arr.forEach(function(n){if(shown<max){html+="• "+esc(n)+"<br>";shown++;}});});if(noms.length>max)html+="… et "+(noms.length-max)+" autres";document.getElementById("mb-list").innerHTML=html;document.getElementById("maj-banner").style.display="block";}
+function detecterMaj(fc){try{var prev=mstore.get("sigs");var cur=sigParNom(fc);if(prev){var chg=Object.keys(cur).filter(function(n){return cur[n]!==prev[n];});chg.sort(function(a,b){return a.localeCompare(b);});if(chg.length)afficherMaj(chg,typeParNom(fc));}mstore.set("sigs",cur);}catch(e){}}
+document.getElementById("mb-close").addEventListener("click",function(){document.getElementById("maj-banner").style.display="none";});
+function majCompteursGuide(fc){var g1=document.getElementById("guide-nb"),g2=document.getElementById("guide-total");if(!g1&&!g2)return;var noms={},n=0;(fc.features||[]).forEach(function(ft){var p=ft.properties||{};if((p.type||"association")!=="association")return;n++;if(p.nom)noms[p.nom]=1;});if(g1)g1.textContent=Object.keys(noms).length;if(g2)g2.textContent=n;}
+function chargerFeatures(fc){
+  Object.keys(clusters).forEach(function(k){clusters[k].clearLayers();}); markers=[];
+  document.getElementById("hint").style.display="none";
+  if(fc.date_maj) document.getElementById("foot-date").textContent="· MàJ données : "+fc.date_maj;
+  var z=map.getZoom(), sz=tailleParZoom(z);
+  (fc.features||[]).forEach(function(ft){
+    var p=ft.properties||{}, co=(ft.geometry&&ft.geometry.coordinates)||[];
+    if(typeof co[0]!=="number"||typeof co[1]!=="number"||isNaN(co[0])||isNaN(co[1])) return;
+    var sites=sitesDe(p.fiche||""); var multi=sites.length>=2;
+    var m=L.marker([co[1],co[0]],{icon:pin(sz,multi,p.type||"association",p.menu_bariatrique==="oui"),title:p.nom});
+    m._props=p; m._multi=multi; m._sites=sites.length?sites:[[co[1],co[0]]]; m._dim=false;
+    markers.push(m);
+  });
+  majCompteursGuide(fc);
+  initDateSlider();
+  appliquerFiltres();
+  if(window.focusRegionCode){var fr=RCODE[window.focusRegionCode];window.focusRegionCode=null;if(fr)setTimeout(function(){allerRegion(fr);},400);}
+}
+var dateSeuil=null, dateSliderPret=false;
+function dateNum(s){var m=/^(\d{2})\/(\d{2})\/(\d{4})$/.exec(s||"");if(!m)return null;return Math.floor(Date.UTC(+m[3],+m[2]-1,+m[1])/86400000);}
+function passeDateFiltre(m){if(dateSeuil==null)return true;var d=dateNum(m._props.date_maj);if(d==null)return true;return d>=dateSeuil;}
+function jourEnDate(day){if(day==null)return "\u2014";var d=new Date(day*86400000);function z(n){return(n<10?"0":"")+n;}return z(d.getUTCDate())+"/"+z(d.getUTCMonth()+1)+"/"+d.getUTCFullYear();}
+function majDateLab(){var l=document.getElementById("date-slider-lab");if(l)l.textContent=jourEnDate(dateSeuil);}
+function initDateSlider(){if(dateSliderPret)return;var sl=document.getElementById("date-slider");if(!sl)return;var days=[];markers.forEach(function(m){var d=dateNum(m._props.date_maj);if(d!=null)days.push(d);});if(!days.length){sl.disabled=true;var l0=document.getElementById("date-slider-lab");if(l0)l0.textContent="(aucune date)";dateSliderPret=true;return;}var mn=Math.min.apply(null,days),mx=Math.max.apply(null,days);if(mx<=mn)mx=mn+1;sl.min=mn;sl.max=mx;sl.step=1;var st=mstore.get("dateSeuil");var v=(st!=null&&st>=mn&&st<=mx)?st:mn;sl.value=v;dateSeuil=v;majDateLab();sl.addEventListener("input",function(){dateSeuil=parseInt(sl.value,10);mstore.set("dateSeuil",dateSeuil);majDateLab();appliquerFiltres();});dateSliderPret=true;}
+function visible(m){if(!passeDateFiltre(m))return false;if(menuBariaOnly&&(m._props.type||"association")==="restaurant"&&m._props.menu_bariatrique!=="oui")return false;var t=m._props.type||"association";if(typeVisible[t]===false)return false;if(t!=="association")return true;if(showAll)return true;var aCat=CATS.some(function(c){return m._props[c[0]]==="oui";});if(!aCat)return true;return CATS.some(function(c){return m._props[c[0]]==="oui" && catToggle[c[0]];});}
+function appliquerFiltres(){
+  markers.forEach(function(m){
+    var cl=clusters[m._props.type||"association"]||clusters.association;
+    var ok=visible(m);
+    if(ok&&!cl.hasLayer(m)) cl.addLayer(m);
+    if(!ok&&cl.hasLayer(m)) cl.removeLayer(m);
+  });
+  majCompteur();
+}
+function majCompteur(){
+  var vus={},n=0;
+  markers.forEach(function(m){if(visible(m)&&!vus[m._props.nom]){vus[m._props.nom]=1;n++;}});
+  var el=document.getElementById("cfg-count");
+  if(el){el.textContent=n+" association"+(n>1?"s":"")+" affichée"+(n>1?"s":"");el.classList.toggle("zero",n===0);}
+  var al=document.getElementById("alarme-vide");if(al)al.style.display=(n===0)?"block":"none";
+}
+const CATS_CFG=[["bariatrique","Afficher les associations qui proposent un parcours bariatrique"],["adultes","Afficher les associations qui s'adressent aux adultes"],["adolescents","Afficher les associations qui s'adressent aux adolescents"],["enfants","Afficher les associations qui s'adressent aux enfants"],["pairs_inclus","Afficher les associations dont la direction contient au moins un pair-aidant"],["pros_inclus","Afficher les associations dont la direction contient au moins un professionnel de santé"]];
+var togEl=document.getElementById("cfg-toggles");
+// interrupteur maitre : Afficher toutes
+var mrow=document.createElement("label"); mrow.className="tgl tgl-master";
+var minp=document.createElement("input"); minp.type="checkbox"; minp.id="tog-all"; minp.checked=true;
+var msp=document.createElement("span"); msp.textContent="Afficher toutes les associations";
+mrow.appendChild(minp); mrow.appendChild(msp); togEl.appendChild(mrow);
+minp.addEventListener("change",function(){
+  if(minp.checked){showAll=true;CATS.forEach(function(c){catToggle[c[0]]=true;});document.querySelectorAll('#cfg-toggles input[data-cat]').forEach(function(i){i.checked=true;});}
+  else{showAll=false;}
+  appliquerFiltres();saveSettings();
+});
+// interrupteurs categories (bouton a gauche, texte a droite)
+CATS_CFG.forEach(function(c){
+  var row=document.createElement("label"); row.className="tgl";
+  var inp=document.createElement("input"); inp.type="checkbox"; inp.checked=true; inp.setAttribute("data-cat",c[0]);
+  var sp=document.createElement("span"); sp.textContent=c[1];
+  inp.addEventListener("change",function(){showAll=false;var ta=document.getElementById("tog-all");if(ta)ta.checked=false;catToggle[c[0]]=inp.checked;appliquerFiltres();saveSettings();});
+  row.appendChild(inp); row.appendChild(sp); togEl.appendChild(row);
+});
+/* pays de recherche de ville (Photon) : cases FR/BE/CH/CA, persistees dans cobmap.villePays */
+(function(){
+  var savedP=mstore.get("villePays");
+  if(savedP&&typeof savedP==="object"){["FR","BE","CH","CA"].forEach(function(k){villePays[k]=savedP[k]!==false;});}
+  var host=document.getElementById("cfg-pays"); if(!host)return;
+  [["FR","France"],["BE","Belgique"],["CH","Suisse"],["CA","Canada"]].forEach(function(pp){
+    var lab=document.createElement("label"); lab.className="pays-chk"+(villePays[pp[0]]?" on":"");
+    var i=document.createElement("input"); i.type="checkbox"; i.checked=!!villePays[pp[0]];
+    var s=document.createElement("span"); s.textContent=pp[1];
+    i.addEventListener("change",function(){villePays[pp[0]]=i.checked;lab.classList.toggle("on",i.checked);mstore.set("villePays",villePays);});
+    lab.appendChild(i); lab.appendChild(s); host.appendChild(lab);
+  });
+})();
+
+/* ---------- taille selon le zoom ---------- */
+map.on("zoomend",function(){
+  var sz=tailleParZoom(map.getZoom());
+  markers.forEach(function(m){ m.setIcon(pin(sz,m._multi,(m._props.type||"association"),m._props.menu_bariatrique==="oui")); if(m._dim&&m._icon)m._icon.style.opacity=.28; });
+  secMarkers.forEach(function(m){ m.setIcon(secPin(Math.max(18,sz-4))); });
+});
+
+/* ---------- copier ---------- */
+function fallbackCopy(t){var ta=document.createElement("textarea");ta.value=t;ta.style.position="fixed";ta.style.opacity="0";document.body.appendChild(ta);ta.select();try{document.execCommand("copy");}catch(e){}document.body.removeChild(ta);}
+function ligneFiche(f,icon){var m=f.match(new RegExp(":fa-"+icon+":[^|]*\\|([^|]*)\\|"));return m?m[1].replace(/<br>/g," ").replace(/\s+/g," ").trim():"";}
+function copier(p){
+  var f=p.fiche||"";
+  var adresse=ligneFiche(f,"map-o");
+  var mail=(f.match(/mailto:([^)\s]+)/)||[])[1]||"";
+  var tel=ligneFiche(f,"mobile");
+  var L=["Nom : "+(p.nom||"")];
+  if(adresse)L.push("Adresse : "+adresse);
+  if(mail)L.push("Courriel : "+mail);
+  if(tel)L.push("Telephone : "+tel);
+  L.push(MENTION);
+  L.push("(Plus d'informations disponibles)");
+  var texte=L.join("\n");
+  var msg="Vous pouvez coller les données dans un SMS ou un courriel.";
+  if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(texte).then(function(){toast(msg);}).catch(function(){fallbackCopy(texte);toast(msg);});}
+  else{fallbackCopy(texte);toast(msg);}
+}
+
+/* ---------- interaction B2 (clic multi-sites) ---------- */
+var secLine=null;
+function nettoyerSec(){ secMarkers.forEach(function(m){map.removeLayer(m);}); secMarkers=[]; if(secLine){map.removeLayer(secLine);secLine=null;} }
+map.on("popupopen",function(e){
+  var src=e.popup._src||e.popup._source; nettoyerSec();
+  var root=e.popup.getElement();
+  try{
+  if(src._multi){
+    var sz=Math.max(18,tailleParZoom(map.getZoom())-4);
+    var bons=src._sites.filter(function(s){return bornesOK(s[0],s[1]);});
+    bons.forEach(function(s){var mk=L.marker(s,{icon:secPin(sz),interactive:false}); mk.addTo(map); secMarkers.push(mk);});
+    var nom=src._props.nom;
+    markers.forEach(function(m){ var dif=m._props.nom!==nom; m._dim=dif; if(m._icon)m._icon.style.opacity=dif?.28:1; });
+    if(bons.length){
+      /* padding haut = hauteur reelle de la fiche : tous les points restent visibles en-dessous, sur les ecrans courants */
+      var ph=(root&&root.offsetHeight)||320; var mh=map.getSize().y;
+      var topPad=Math.max(210,Math.min(ph+46,mh-130));
+      map.fitBounds(L.latLngBounds(bons),{paddingTopLeft:L.point(30,topPad),paddingBottomRight:L.point(30,50),maxZoom:13,animate:true});
+    }
+  }
+  }catch(_){}
+  var bg=root&&root.querySelector(".b-grand"); if(bg)bg.addEventListener("click",function(){ouvrirModal(src._props);});
+  var bc=root&&root.querySelector(".b-copier"); if(bc)bc.addEventListener("click",function(){copier(src._props);});
+});
+map.on("popupclose",function(){ nettoyerSec(); markers.forEach(function(m){m._dim=false; if(m._icon)m._icon.style.opacity=1;}); });
+
+/* ---------- modale ---------- */
+const modal=document.getElementById("modal"); var modalProps=null;
+function ouvrirModal(p){ modalProps=p; document.getElementById("modal-tag").textContent=p.nom||""; document.getElementById("modal-fiche").innerHTML=construirePopup(p,true); modal.classList.add("ouvert"); }
+document.getElementById("modal-close").addEventListener("click",function(){modal.classList.remove("ouvert");});
+document.getElementById("modal-copier").addEventListener("click",function(){if(modalProps)copier(modalProps);});
+modal.addEventListener("click",function(e){if(e.target===modal)modal.classList.remove("ouvert");});
+
+/* ---------- moveTo ---------- */
+document.addEventListener("click",function(e){
+  var a=e.target.closest('a[href^="app://moveTo?"]'); if(!a)return; e.preventDefault();
+  var c=a.getAttribute("href").split("?")[1].split(",");
+  var lng=parseFloat(c[0]),lat=parseFloat(c[1]);
+  if(bornesOK(lat,lng)){modal.classList.remove("ouvert");map.flyTo([lat,lng],15);}else{toast("Coordonnée hors limites : à corriger dans les données.");}
+});
+
+/* ---------- zones + fond ---------- */
+/* ---- Regions groupees par pays (menu "Aller a...") ---- */
+var FLAG={Belgique:"🇧🇪",Canada:"🇨🇦",France:"🇫🇷",Suisse:"🇨🇭"};
+var GRP={
+ Belgique:["Anvers (Antwerpen)","Brabant flamand (Vlaams-Brabant)","Brabant wallon","Bruxelles-Capitale","Flandre-Occidentale (West-Vlaanderen)","Flandre-Orientale (Oost-Vlaanderen)","Hainaut","Liège","Limbourg (Limburg)","Luxembourg","Namur"],
+ Canada:["Abitibi-Témiscamingue","Bas-Saint-Laurent","Capitale-Nationale","Centre-du-Québec","Chaudière-Appalaches","Côte-Nord","Estrie","Gaspésie–Îles-de-la-Madeleine","Lanaudière","Laurentides","Laval","Mauricie","Montérégie","Montréal","Nord-du-Québec","Outaouais","Saguenay–Lac-Saint-Jean"],
+ FranceMetro:["Auvergne-Rhône-Alpes","Bourgogne-Franche-Comté","Bretagne","Centre-Val de Loire","Corse","Grand Est","Hauts-de-France","Île-de-France","Normandie","Nouvelle-Aquitaine","Occitanie","Pays de la Loire","Provence-Alpes-Côte d'Azur"],
+ DROM:["Guadeloupe","Guyane","La Réunion","Martinique","Mayotte"],
+ Suisse:["Appenzell Rhodes-Extérieures","Appenzell Rhodes-Intérieures","Argovie","Bâle-Campagne","Bâle-Ville","Berne","Fribourg","Genève","Glaris","Grisons","Jura","Lucerne","Neuchâtel","Nidwald","Obwald","Saint-Gall","Schaffhouse","Schwytz","Soleure","Tessin","Thurgovie","Uri","Valais","Vaud","Zoug","Zurich"]
+};
+var REG_PAYS={};Object.keys(GRP).forEach(function(g){var p=(g==="FranceMetro"||g==="DROM")?"France":g;GRP[g].forEach(function(r){REG_PAYS[r]=p;});});["Belgique","Canada","Suisse","France"].forEach(function(p){REG_PAYS[p]=p;});
+function paysDeRegion(r){return REG_PAYS[r]||"France";}
+var RCODE={"01":"Auvergne-Rhône-Alpes","02":"Bourgogne-Franche-Comté","03":"Bretagne","04":"Centre-Val de Loire","05":"Corse","06":"Grand Est","07":"Hauts-de-France","08":"Île-de-France","09":"Normandie","10":"Nouvelle-Aquitaine","11":"Occitanie","12":"Pays de la Loire","13":"Provence-Alpes-Côte d'Azur","14":"Guadeloupe","15":"Martinique","16":"Guyane","17":"La Réunion","18":"Mayotte","19":"Belgique","20":"Suisse","21":"Canada"};
+var regionBtn=document.getElementById("zone-btn"), regionMenu=document.getElementById("zone-menu"), regionLab=document.getElementById("zone-lab");
+var regionCourante="", regMenuQ="";
+function comptesParRegion(){var c={};markers.forEach(function(m){if(!visible(m))return;var r=m._props.region||"";if(r)c[r]=(c[r]||0)+1;});return c;}
+function regionsMasquees(){ try{return JSON.parse(mstore.get("regMasq")||"[]");}catch(e){return [];} }
+function fermerRegionMenu(){ if(regionMenu){regionMenu.hidden=true;} if(regionBtn){regionBtn.setAttribute("aria-expanded","false");} }
+function ptsPour(pred){var pts=[];markers.forEach(function(m){if(visible(m)&&pred(m._props.region||""))pts.push(m.getLatLng());});return pts;}
+function cadrer(pts){if(pts.length)map.fitBounds(L.latLngBounds(pts),{padding:[45,45],maxZoom:12,animate:true});}
+function allerPays(p){regionCourante=p;if(regionLab)regionLab.textContent=p;var metro=(p==="France");cadrer(ptsPour(function(r){return paysDeRegion(r)===p&&(!metro||GRP.FranceMetro.indexOf(r)>=0);}));fermerRegionMenu();}
+function allerRegion(r){ if(["Belgique","Canada","Suisse"].indexOf(r)>=0){allerPays(r);return;} regionCourante=r;if(regionLab)regionLab.textContent=r||"Aller à…";cadrer(ptsPour(function(x){return r===""||x===r;}));fermerRegionMenu(); }
+function ligneMenu(txt,count,cls,onClick){var b=document.createElement("button");b.type="button";if(cls)b.className=cls;b.textContent=txt+(count!=null?" ("+count+")":"");b.addEventListener("click",function(e){e.stopPropagation();onClick();});regionMenu.appendChild(b);}
+function construireMenuRegions(){ if(!regionMenu)return; var cc=comptesParRegion(); var masq=regionsMasquees(); var q=(regMenuQ||"").toLowerCase(); regionMenu.innerHTML="";
+  var sr=document.createElement("input");sr.type="text";sr.placeholder="Rechercher…";sr.className="reg-search";sr.value=regMenuQ;sr.addEventListener("click",function(e){e.stopPropagation();});sr.addEventListener("input",function(){regMenuQ=sr.value;var p=sr.selectionStart;construireMenuRegions();var n=regionMenu.querySelector(".reg-search");if(n){n.focus();try{n.setSelectionRange(p,p);}catch(e){}}});regionMenu.appendChild(sr);
+  function mtch(x){return !q||x.toLowerCase().indexOf(q)>=0;}
+  function cumul(pred){var n=0;Object.keys(cc).forEach(function(r){if(pred(r))n+=cc[r];});return n;}
+  if(mtch("Tout afficher")) ligneMenu("Tout afficher",null,regionCourante===""?"on":"",function(){allerRegion("");});
+  function bloc(pays,liste,headLbl,headCumul){
+    var subs=liste.filter(function(r){return cc[r]&&masq.indexOf(r)<0&&mtch(r);});
+    if(!subs.length) return;
+    if(headCumul) ligneMenu(headLbl,headCumul,"reg-head"+(regionCourante===pays?" on":""),function(){allerPays(pays);});
+    subs.forEach(function(r){ligneMenu(r,cc[r],"reg-sub"+(r===regionCourante?" on":""),function(){allerRegion(r);});});
+  }
+  bloc("Belgique",GRP.Belgique,FLAG.Belgique+" Belgique",cumul(function(r){return paysDeRegion(r)==="Belgique";}));
+  bloc("Canada",GRP.Canada,FLAG.Canada+" Canada",cumul(function(r){return paysDeRegion(r)==="Canada";}));
+  bloc("France",GRP.FranceMetro,FLAG.France+" France (métropole)",cumul(function(r){return GRP.FranceMetro.indexOf(r)>=0;}));
+  GRP.DROM.filter(function(r){return cc[r]&&masq.indexOf(r)<0&&mtch(r);}).forEach(function(r){ligneMenu(r,cc[r],"reg-sub"+(r===regionCourante?" on":""),function(){allerRegion(r);});});
+  bloc("Suisse",GRP.Suisse,FLAG.Suisse+" Suisse",cumul(function(r){return paysDeRegion(r)==="Suisse";}));
+}
+if(regionBtn&&regionMenu){
+  regionBtn.addEventListener("click",function(e){ e.stopPropagation(); var ferme=regionMenu.hidden; if(ferme){ regMenuQ=""; construireMenuRegions(); regionMenu.hidden=false; regionBtn.setAttribute("aria-expanded","true"); } else { fermerRegionMenu(); } });
+  document.addEventListener("click",function(e){ if(regionMenu&&!regionMenu.hidden&&!regionMenu.contains(e.target)&&!regionBtn.contains(e.target)) fermerRegionMenu(); });
+}
+/* Modale "Choisissez les raccourcis de selection" (masquage) */
+var regModalMasq=null;
+function buildRegModal(q){
+  q=(q||"").toLowerCase(); var host=document.getElementById("reg-modal-list"); if(!host)return;
+  var pres={};markers.forEach(function(m){var r=m._props.region||"";if(r)pres[r]=true;}); host.innerHTML="";
+  [["Belgique",GRP.Belgique],["Canada",GRP.Canada],["France (métropole)",GRP.FranceMetro],["Outre-mer",GRP.DROM],["Suisse",GRP.Suisse]].forEach(function(g){
+    var subs=g[1].filter(function(r){return pres[r]&&(!q||r.toLowerCase().indexOf(q)>=0);}); if(!subs.length)return;
+    var allM=subs.every(function(r){return regModalMasq.indexOf(r)>=0;});
+    var hl=document.createElement("label");hl.className="rm-row rm-h";var hc=document.createElement("input");hc.type="checkbox";hc.checked=!allM;
+    hc.addEventListener("change",function(){if(hc.checked){subs.forEach(function(r){regModalMasq=regModalMasq.filter(function(x){return x!==r;});});}else{subs.forEach(function(r){if(regModalMasq.indexOf(r)<0)regModalMasq.push(r);});}buildRegModal(document.getElementById("reg-modal-q").value);});
+    var hs=document.createElement("span");hs.textContent=g[0];hl.appendChild(hc);hl.appendChild(hs);host.appendChild(hl);
+    subs.forEach(function(r){var lab=document.createElement("label");lab.className="rm-row rm-sub";var cb=document.createElement("input");cb.type="checkbox";cb.checked=regModalMasq.indexOf(r)<0;cb.addEventListener("change",function(){if(cb.checked){regModalMasq=regModalMasq.filter(function(x){return x!==r;});}else if(regModalMasq.indexOf(r)<0){regModalMasq.push(r);}hc.checked=subs.some(function(rr){return regModalMasq.indexOf(rr)<0;});});var sp=document.createElement("span");sp.textContent=r;lab.appendChild(cb);lab.appendChild(sp);host.appendChild(lab);});
+  });
+}
+function ouvrirRegModal(){var g=document.getElementById("guideOverlay");if(g)g.classList.remove("open");regModalMasq=regionsMasquees().slice();var qi=document.getElementById("reg-modal-q");if(qi)qi.value="";buildRegModal("");document.getElementById("reg-modal").classList.add("ouvert");}
+menuBariaOnly=mstore.get("menuBaria")===true;
+(function(){var cmb=document.getElementById("cfg-menu-baria");if(cmb){cmb.checked=menuBariaOnly;cmb.addEventListener("change",function(){menuBariaOnly=cmb.checked;mstore.set("menuBaria",menuBariaOnly);appliquerFiltres();});}
+var b=document.getElementById("cfg-reg-modal");if(b)b.addEventListener("click",ouvrirRegModal);
+  var qi=document.getElementById("reg-modal-q");if(qi)qi.addEventListener("input",function(){buildRegModal(this.value);});
+  var ok=document.getElementById("reg-modal-ok");if(ok)ok.addEventListener("click",function(){mstore.set("regMasq",JSON.stringify(regModalMasq||[]));document.getElementById("reg-modal").classList.remove("ouvert");});
+  var no=document.getElementById("reg-modal-non");if(no)no.addEventListener("click",function(){document.getElementById("reg-modal").classList.remove("ouvert");});
+  var mo=document.getElementById("reg-modal");if(mo)mo.addEventListener("click",function(e){if(e.target===mo)mo.classList.remove("ouvert");});
+})();
+
+/* ---------- recherche unifiee (loupe en-tete) : association/ville, prete pour les types ---------- */
+(function(){
+  var row=document.getElementById("search-row");
+  var inp=document.getElementById("sp-q");
+  var clr=document.getElementById("sp-clear");
+  var lst=document.getElementById("sp-list");
+  var msg=document.getElementById("sp-msg");
+  if(!row||!inp) return;
+  function norm(s){return (s||"").toString().normalize("NFD").replace(/[\u0300-\u036f]/g,"").toLowerCase().trim();}
+  function fermer(){lst.classList.remove("show");lst.innerHTML="";}
+  function resetMsg(){msg.textContent="";msg.classList.remove("err");}
+  function majX(){clr.hidden=!inp.value;}
+  clr.addEventListener("click",function(){inp.value="";majX();fermer();resetMsg();inp.focus();});
+  /* entites lues EN DIRECT depuis les donnees chargees (jamais un instantane fige) */
+  function entites(){
+    var vus={},out=[];
+    markers.forEach(function(m){
+      var p=m._props||{},n=p.nom; if(!n) return; if(!visible(m)) return;
+      var t=p.type||"association", key=t+"|"+n;
+      if(!vus[key]){vus[key]={nom:n,type:t,m:m};out.push(vus[key]);}
+    });
+    out.sort(function(a,b){return a.nom.localeCompare(b.nom,"fr");});
+    return out;
+  }
+  function allerEntite(e){
+    fermer(); inp.value=e.nom; majX(); resetMsg();
+    var done=false; function op(){if(done)return;done=true;ouvrirFiche(e.m);}
+    map.flyTo(e.m.getLatLng(),13); map.once("moveend",op); setTimeout(op,900);
+  }
+  function allerVille(q){
+    fermer(); resetMsg(); msg.textContent="Recherche en cours...";
+    var pays=Object.keys(villePays).filter(function(k){return villePays[k];});
+    fetch("https://photon.komoot.io/api/?lang=fr&limit=12&q="+encodeURIComponent(q))
+      .then(function(r){return r.json();})
+      .then(function(j){
+        var fs=(j&&j.features)||[];
+        var cand=fs.filter(function(f){var cc=(f.properties&&f.properties.countrycode)||"";return pays.indexOf(cc)>=0;});
+        var placeTypes={city:1,town:1,village:1,municipality:1,hamlet:1};
+        var pref=cand.filter(function(f){var p=f.properties||{};return p.osm_key==="place"&&placeTypes[p.osm_value];});
+        var f=pref[0]||cand[0];
+        if(!f){msg.classList.add("err");msg.textContent=pays.length?"Ville introuvable dans les pays sélectionnés.":"Aucun pays sélectionné (voir Configuration).";return;}
+        var c=f.geometry.coordinates,p=f.properties||{};
+        var lib=[p.name,p.state,p.country].filter(Boolean).join(", ")||q;
+        msg.classList.remove("err"); msg.textContent="Ville : "+lib;
+        map.flyTo([c[1],c[0]],12);
+      })
+      .catch(function(){msg.classList.add("err");msg.textContent="Recherche indisponible (hors ligne ?).";});
+  }
+  function badge(t){
+    if(t==="pair_aidant")return '<span class="sp-tag pa">pair-aidant</span>';
+    if(t==="restaurant")return '<span class="sp-tag re">restaurant</span>';
+    if(t==="apa")return '<span class="sp-tag ap">APA</span>';
+    return '<span class="sp-tag as">association</span>';
+  }
+  function rendre(){
+    resetMsg();
+    var q=inp.value, nq=norm(q);
+    if(!nq){fermer();return;}
+    var res=entites().filter(function(e){return norm(e.nom).indexOf(nq)>=0;}).slice(0,10);
+    lst.innerHTML="";
+    res.forEach(function(e){
+      var b=document.createElement("button"); b.type="button"; b.className="sp-item";
+      b.innerHTML='<span class="sp-nom">'+esc(e.nom)+'</span>'+badge(e.type);
+      b.addEventListener("click",function(){allerEntite(e);});
+      lst.appendChild(b);
+    });
+    var bv=document.createElement("button"); bv.type="button"; bv.className="sp-item sp-ville-opt";
+    bv.innerHTML='<i class="fa fa-map-marker"></i> Aller à la ville \u00ab '+esc(q.trim())+' \u00bb';
+    bv.addEventListener("click",function(){allerVille(q.trim());});
+    lst.appendChild(bv);
+    lst.classList.add("show");
+  }
+  inp.addEventListener("input",function(){majX();rendre();});
+  inp.addEventListener("focus",function(){if(inp.value)rendre();});
+  inp.addEventListener("keydown",function(e){
+    if(e.key==="Enter"){var f=lst.querySelector("button");if(f){e.preventDefault();f.click();}}
+    else if(e.key==="Escape"){fermer();}
+  });
+  document.addEventListener("click",function(e){if(lst&&!lst.contains(e.target)&&e.target!==inp)fermer();});
+})();
+var fondCourant="ign"; const btnFond=document.getElementById("btn-fond");
+btnFond.addEventListener("click",function(){
+  if(fondCourant==="ign"){if(map.hasLayer(fondIGN))map.removeLayer(fondIGN);fondOSM.addTo(map);fondCourant="osm";btnFond.innerHTML='<i class="fa fa-exchange"></i> Fond OSM';}
+  else{if(map.hasLayer(fondOSM))map.removeLayer(fondOSM);fondIGN.addTo(map);fondCourant="ign";btnFond.innerHTML='<i class="fa fa-exchange"></i> Fond IGN';}
+  saveSettings();
+});
+
+/* ---------- guide ---------- */
+const guide=document.getElementById("guideOverlay");
+document.getElementById("btn-aide").addEventListener("click",function(){guide.classList.add("open");});
+document.getElementById("guide-close").addEventListener("click",function(){guide.classList.remove("open");});
+guide.addEventListener("click",function(e){if(e.target===guide)guide.classList.remove("open");});
+document.querySelectorAll(".guide-tab").forEach(function(t){t.addEventListener("click",function(){var tab=t.dataset.tab;document.querySelectorAll(".guide-tab").forEach(function(x){x.classList.toggle("active",x===t);});document.querySelectorAll(".guide-tab-content").forEach(function(c){c.classList.toggle("active",c.id==="content-"+tab);});});});
+
+/* ---------- toast ---------- */
+var toastT; function toast(msg){var t=document.getElementById("toast");t.textContent=msg;t.classList.add("show");clearTimeout(toastT);toastT=setTimeout(function(){t.classList.remove("show");},4000);}
+
+/* ---------- PWA install (mobile) ---------- */
+var pwaPrompt=null;
+function isMobile(){return /android|iphone|ipad|ipod/i.test(navigator.userAgent)||window.matchMedia("(max-width:768px)").matches;}
+function isIos(){return /iphone|ipad|ipod/i.test(navigator.userAgent);}
+function isStd(){return window.matchMedia("(display-mode: standalone)").matches||window.navigator.standalone;}
+function installable(){return isMobile()&&!isStd()&&(!!pwaPrompt||isIos());}
+function majInstallUI(){var off=mstore.get("install_off");document.getElementById("btn-install").style.display=(installable()&&!off)?"inline-flex":"none";var w=document.getElementById("cfg-install-wrap");if(w)w.style.display=isStd()?"none":"block";}
+window.addEventListener("beforeinstallprompt",function(e){e.preventDefault();pwaPrompt=e;majInstallUI();});
+window.addEventListener("appinstalled",function(){pwaPrompt=null;document.getElementById("install-invite").style.display="none";majInstallUI();});
+window.addEventListener("load",majInstallUI);
+function lancerInstall(){
+  if(pwaPrompt){pwaPrompt.prompt();pwaPrompt.userChoice.then(function(){pwaPrompt=null;majInstallUI();});return;}
+  if(location.protocol==="file:"){toast("L installation n est possible qu en ligne (https), pas en local.");return;}
+  showInstallModal();
+}
+function instructionsPlateforme(){
+  var ios=isIos(), android=/android/i.test(navigator.userAgent);
+  if(ios) return "<hr style=\"border:none;border-top:1px solid var(--line);margin:10px 0;\"><p><b>Installer sur iPhone / iPad</b></p><ol><li>Bouton <b>Partager</b> (carré avec flèche), en bas de Safari.</li><li><b>« Sur l ecran d accueil »</b>.</li><li><b>Ajouter</b>.</li></ol>";
+  if(android) return "<hr style=\"border:none;border-top:1px solid var(--line);margin:10px 0;\"><p><b>Installer sur Android (Chrome)</b></p><ol><li>Menu <b>⋮</b> (haut à droite).</li><li><b>« Installer l application »</b> (attention : PAS « Ajouter un raccourci »).</li><li>Confirmez : l icône est déposée sur l ecran d accueil.</li></ol>";
+  return "<hr style=\"border:none;border-top:1px solid var(--line);margin:10px 0;\"><p><b>Installer sur ordinateur</b></p><ol><li>Icône d installation dans la barre d adresse, ou menu du navigateur puis <b>Installer</b>.</li></ol>";
+}
+function showInstallModal(){
+  var box=document.getElementById("im-steps");
+  box.innerHTML="<p>Vérification en cours…</p>";
+  document.getElementById("install-modal").classList.add("ouvert");
+  var https=(location.protocol==="https:"||location.hostname==="localhost"||location.hostname==="127.0.0.1");
+  function chk(u){return fetch(u,{cache:"no-store"}).then(function(r){return r.ok;}).catch(function(){return false;});}
+  var swReg=(navigator.serviceWorker&&navigator.serviceWorker.getRegistration)?navigator.serviceWorker.getRegistration().then(function(r){return !!r;}).catch(function(){return false;}):Promise.resolve(false);
+  Promise.all([chk("manifest.json"),chk("icons/icon-192.png"),chk("icons/icon-512.png"),swReg]).then(function(res){
+    var man=res[0],ic=res[1]&&res[2],sw=res[3];
+    function L(ok,t){return "<div style=\"margin:5px 0;\">"+(ok?"✅":"❌")+" "+t+"</div>";}
+    var h="<p style=\"font-weight:700;margin-bottom:8px;\">Diagnostic</p>";
+    h+=L(https,"Connexion sécurisée (https)");
+    h+=L(man,"Manifeste trouvé (manifest.json)");
+    h+=L(ic,"Icônes trouvées (192 et 512)");
+    h+=L(sw,"Service worker actif");
+    if(!https) h+="<p style=\"color:#a3352b;margin-top:8px;\">⚠️ Ouvrez l app via une adresse <b>https://…</b> (pas en local sur le PC).</p>";
+    else if(!man||!ic) h+="<p style=\"color:#a3352b;margin-top:8px;\">⚠️ Un fichier est introuvable en ligne. Vérifiez que <b>manifest.json</b> et le dossier <b>icons/</b> (avec icon-192.png et icon-512.png) sont bien déposés dans le dépôt, <b>à côté de Carte_Obesite.html</b>.</p>";
+    else if(!sw) h+="<p style=\"color:#a3352b;margin-top:8px;\">⚠️ Le service worker ne s est pas enregistré. Vérifiez que <b>sw.js</b> est déployé à côté de la page, puis rechargez une fois.</p>";
+    else if(pwaPrompt) h+="<p style=\"color:var(--teal);margin-top:8px;font-weight:700;\">✅ Tout est prêt !</p><p style=\"text-align:center;\"><button id=\"im-do\" style=\"background:var(--violet);color:#fff;border:0;border-radius:9px;padding:11px 20px;font:inherit;font-weight:700;cursor:pointer;\">📲 Installer maintenant</button></p>";
+    else h+="<p style=\"color:var(--teal);margin-top:8px;\">✅ L app est correctement configurée. Chrome proposera <b>« Installer l application »</b> dans son menu ⋮ — parfois seulement après quelques secondes d usage ou une 2ᵉ visite. Ce n est PAS « Ajouter un raccourci ».</p>";
+    h+=instructionsPlateforme();
+    box.innerHTML=h;
+    var d=document.getElementById("im-do");
+    if(d)d.addEventListener("click",function(){document.getElementById("install-modal").classList.remove("ouvert");if(pwaPrompt){pwaPrompt.prompt();pwaPrompt.userChoice.then(function(){pwaPrompt=null;majInstallUI();});}});
+  });
+}
+document.getElementById("btn-install").addEventListener("click",lancerInstall);
+document.getElementById("im-close").addEventListener("click",function(){document.getElementById("install-modal").classList.remove("ouvert");});
+document.getElementById("install-modal").addEventListener("click",function(e){if(e.target===document.getElementById("install-modal"))document.getElementById("install-modal").classList.remove("ouvert");});
+var _ci=document.getElementById("cfg-install");if(_ci)_ci.addEventListener("click",lancerInstall);
+var _cr=document.getElementById("cfg-reset");if(_cr)_cr.addEventListener("click",reinitialiser);
+document.getElementById("inv-yes").addEventListener("click",function(){document.getElementById("install-invite").style.display="none";lancerInstall();});
+document.getElementById("inv-later").addEventListener("click",function(){document.getElementById("install-invite").style.display="none";mstore.set("install_off",1);majInstallUI();toast("L installation reste disponible dans Aide, onglet Configuration.");});
+function proposerInstall(){if(!installable())return;if(mstore.get("install_off"))return;document.getElementById("install-invite").style.display="block";}
+/* Ko-fi : toutes les 100 utilisations */
+function checkKofi(){if(mstore.get("kofi_supporter"))return;if((_launch%100)===0)document.getElementById("kofi-banner").style.display="block";}
+document.getElementById("kofi-done").addEventListener("click",function(){mstore.set("kofi_supporter",1);document.getElementById("kofi-banner").style.display="none";toast("Merci beaucoup ! ☕");});
+document.getElementById("kofi-close").addEventListener("click",function(){document.getElementById("kofi-banner").style.display="none";});
+document.getElementById("kofi-go").addEventListener("click",function(){document.getElementById("kofi-banner").style.display="none";});
+/* A propos : envoyer / j ai soutenu */
+document.getElementById("ap-envoyer").addEventListener("click",function(){var url=location.origin+location.pathname;var txt="Baria-ressources \u2014 la cartographie des ressources pour les opérés bariatriques";if(navigator.share){navigator.share({title:"Baria-ressources",text:txt,url:url}).catch(function(){});return;}var msg="Lien copié — collez-le dans un SMS, un courriel ou Instagram.";if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(url).then(function(){toast(msg);}).catch(function(){fallbackCopy(url);toast(msg);});}else{fallbackCopy(url);toast(msg);}});
+(function(){var url=location.origin+location.pathname;var txt="Baria-ressources \u2014 la cartographie des ressources pour les opérés bariatriques";var eu=encodeURIComponent(url),et=encodeURIComponent(txt);function S(id,h){var e=document.getElementById(id);if(e)e.href=h;}S("sh-fb","https://www.facebook.com/sharer/sharer.php?u="+eu);S("sh-wa","https://wa.me/?text="+encodeURIComponent(txt+" "+url));S("sh-li","https://www.linkedin.com/sharing/share-offsite/?url="+eu);S("sh-tw","https://twitter.com/intent/tweet?text="+et+"&url="+eu);S("sh-em","mailto:?subject="+encodeURIComponent("Baria-ressources")+"&body="+encodeURIComponent(txt+"\n"+url));})();
+document.getElementById("ap-supported").addEventListener("click",function(){mstore.set("kofi_supporter",1);document.getElementById("kofi-banner").style.display="none";toast("Merci beaucoup ! ☕");});
+
+/* ---------- service worker ---------- */
+if("serviceWorker" in navigator){window.addEventListener("load",function(){navigator.serviceWorker.register("sw.js").then(function(reg){reg.addEventListener("updatefound",function(){var nw=reg.installing;if(!nw)return;nw.addEventListener("statechange",function(){if(nw.state==="installed"&&navigator.serviceWorker.controller){window.location.reload();}});});}).catch(function(){});});}
+
+/* ---------- init ---------- */
+setTimeout(function(){try{proposerInstall();checkKofi();}catch(e){}},1800);
+var _svT; map.on("moveend",function(){clearTimeout(_svT);_svT=setTimeout(saveSettings,500);});
+(function restore(){
+  var st=mstore.get("settings"); if(!st)return;
+  if(st.fond==="osm"){if(map.hasLayer(fondIGN))map.removeLayer(fondIGN);fondOSM.addTo(map);fondCourant="osm";btnFond.innerHTML='<i class="fa fa-exchange"></i> Fond OSM';}
+  if(typeof st.showAll==="boolean")showAll=st.showAll;
+  if(st.cats){CATS.forEach(function(c){if(st.cats[c[0]]===false)catToggle[c[0]]=false;});}
+  var _ta=document.getElementById("tog-all");if(_ta)_ta.checked=showAll;
+  document.querySelectorAll("#cfg-toggles input[data-cat]").forEach(function(inp){inp.checked=catToggle[inp.getAttribute("data-cat")]!==false;});
+  if(st.c&&typeof st.z==="number"){try{map.setView([st.c[0],st.c[1]],st.z);}catch(e){}}else{try{map.setView([25,5],2);}catch(e){}}
+})();
+/* ---------- Dernieres nouveautes (News.json, editorial) ---------- */
+var newsData=[];
+function renderNews(md){var h=marked.parse(md||"");return h.replace(/<a href="(https?:[^"]*)"/g,'<a href="$1" target="_blank" rel="noopener"');}
+function dateVal(s){var m=/(\d{2})\/(\d{2})\/(\d{4})/.exec(s||"");return m?(parseInt(m[3],10)*10000+parseInt(m[2],10)*100+parseInt(m[1],10)):0;}
+var RUBLBL={app:"Nouvelles fonctions",restaurant:"Restaurants",association:"Associations",pair_aidant:"Pair-aidants",apa:"Activités physiques adaptées"};
+var RUBORDER=["app","restaurant","association","pair_aidant","apa"];
+function newsVisibles(){return newsData.filter(function(it){var r=it.rubrique||"app";if(r==="restaurant")return typeVisible.restaurant;if(r==="association")return typeVisible.association;if(r==="pair_aidant")return typeVisible.pair_aidant;if(r==="apa")return typeVisible.apa;return true;});}
+function afficherNewsModal(items){
+  items=items.slice().sort(function(a,b){return dateVal(b.date)-dateVal(a.date);});
+  var groups={}; items.forEach(function(it){var r=it.rubrique||"app";(groups[r]=groups[r]||[]).push(it);});
+  var html=""; RUBORDER.forEach(function(r){if(!groups[r])return;html+='<div class="news-rub">'+RUBLBL[r]+'</div>';groups[r].forEach(function(it){html+='<div class="news-item"><div class="news-date">'+esc(it.date||"")+'</div>'+renderNews(it.contenu||"")+'</div>';});});
+  document.getElementById("news-body").innerHTML=html||"<p style=\"color:var(--muted);\">Aucune nouveaute pour le moment.</p>";
+  document.getElementById("news-modal").classList.add("ouvert");
+}
+function montrerNews(auto){
+  var aucun=!typeVisible.association&&!typeVisible.pair_aidant&&!typeVisible.restaurant&&!typeVisible.apa; if(aucun)return;
+  var vis=newsVisibles();
+  if(!auto){ afficherNewsModal(vis); return; }
+  if(mstore.get("newsOn")===false) return;
+  if(!vis.length) return;
+  var seen=mstore.get("newsSeen"); var items;
+  if(seen==null){ items=vis.slice().sort(function(a,b){return dateVal(b.date)-dateVal(a.date);}).slice(0,1); }
+  else { items=vis.filter(function(it){return dateVal(it.date)>seen;}); }
+  if(items.length) afficherNewsModal(items);
+}
+function marquerNewsVues(){ var mx=0; newsData.forEach(function(it){var d=dateVal(it.date);if(d>mx)mx=d;}); mstore.set("newsSeen",mx); }
+(function(){var ok=document.getElementById("news-ok"),cl=document.getElementById("news-close");
+  function ferme(){marquerNewsVues();document.getElementById("news-modal").classList.remove("ouvert");}
+  if(ok)ok.addEventListener("click",ferme); if(cl)cl.addEventListener("click",ferme);
+  var cb=document.getElementById("cfg-news-on"); if(cb){cb.checked=mstore.get("newsOn")!==false;cb.addEventListener("change",function(){mstore.set("newsOn",cb.checked);});}
+  var see=document.getElementById("cfg-news-see"); if(see)see.addEventListener("click",function(){var g=document.getElementById("guideOverlay");if(g)g.classList.remove("open");montrerNews(false);});
+})();
+function chargerNews(){fetch("News.json",{cache:"no-cache"}).then(function(r){if(!r.ok)throw 0;return r.json();}).then(function(j){newsData=(j&&j.news)||[];setTimeout(function(){montrerNews(true);},600);}).catch(function(){});}
+chargerNews();
+function chargerGeo(essai){fetch("Carte_Obesite.geojson",{cache:"no-cache"}).then(function(r){if(!r.ok)throw 0;return r.json();}).then(function(fc){document.getElementById("hint").style.display="none";chargerFeatures(fc);}).catch(function(){document.getElementById("hint").style.display="block";if((essai||0)<40)setTimeout(function(){chargerGeo((essai||0)+1);},8000);});}
+chargerGeo(0);
+</script>
+</body>
+</html>
