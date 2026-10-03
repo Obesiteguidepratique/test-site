@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://obesite-guide-pratique.eu/sitemap.xml
